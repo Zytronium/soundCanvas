@@ -14,14 +14,20 @@
     --theme2-br: #ff00c8;
     --theme2-bl: #8700e7;
 }
-html, body {
-    height: 100%;
+body {
+    height: 100vh;
     margin: 0;
     padding: 0;
+    display: flex;
+    background-color: #191b21;
+    justify-content: center;
 }
 
-body {
+.canvas {
+    background-color: white;
     background:
+            radial-gradient(at center,       white,            white 100%),
+
             radial-gradient(at top left,     var(--theme2-tl), transparent 55%),
             radial-gradient(at top right,    var(--theme2-tr), transparent 55%),
             radial-gradient(at bottom right, var(--theme2-br), transparent 55%),
@@ -32,4 +38,7 @@ body {
             radial-gradient(at bottom right, var(--theme2-br), transparent 55%),
             radial-gradient(at bottom left,  var(--theme2-bl), transparent 55%);
     background-blend-mode: darken;
+    width: 80vmin;
+    height: 80vmin;
+    margin: auto;
 }
