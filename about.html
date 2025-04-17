@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SoundCanvas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #ff0026, #ff5e00, #ff00c8, #8700e7);
+      background-size: 400% 400%;
+      animation: gradientMove 20s ease infinite;
+      color: white;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .fade-in.show {
+      opacity: 1;
+    }
+
+    .creator-name {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin: 0 15px;
+    }
+
+    .creator-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="d-flex flex-column justify-content-center align-items-center">
+      <h1 class="display-4 fw-bold mb-4">Thank You for Using SoundCanvas</h1>
+      <h2 id="authorsTitle" class="fade-in fs-2">Creators</h2>
+      <div class="creator-container">
+        <span id="author1" class="fade-in creator-name">Daniel Stelljes</span>
+        <span id="author2" class="fade-in creator-name">John Wilson</span>
+        <span id="author3" class="fade-in creator-name">Harrison Gearhart</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      document.getElementById("authorsTitle").classList.add("show");
+    }, 2000);
+
+    setTimeout(() => {
+      document.getElementById("author1").classList.add("show");
+    }, 4000);
+
+    setTimeout(() => {
+      document.getElementById("author2").classList.add("show");
+    }, 5000);
+
+    setTimeout(() => {
+      document.getElementById("author3").classList.add("show");
+    }, 6000);
+  </script>
+</body>
+</html>
