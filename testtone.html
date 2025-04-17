@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Scale Grid</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <style>
+    body { 
+      margin: 0;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      height: 100vh;
+    }
+    .cell {
+      border: 1px solid #ddd;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .cell:hover {
+      background: rgba(0,0,0,0.1);
+    }
+    .cell::after {
+      content: attr(data-note);
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      font-size: 12px;
+      color: #666;
+    }
+    #controls {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      display: flex;
+      gap: 10px;
+    }
+    button, select {
+      padding: 8px 15px;
+      background: #6200ee;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .scale-label {
+      position: absolute;
+      left: 5px;
+      top: 5px;
+      font-weight: bold;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  
+  <div id="controls">
+    <button id="start">Start Audio</button>
+    <select id="instrument">
+      <option value="synth">Synth</option>
+      <option value="fm">FM Synth</option>
+      <option value="pluck">Pluck</option>
+      <option value="noise">Noise</option>
+      <option value="metal">Metal</option>
+    </select>
+  </div>
+
+  <script>
+    // Initialize instruments
+    const instruments = {
+      synth: new Tone.PolySynth(Tone.Synth).toDestination(),
+      fm: new Tone.PolySynth(Tone.FMSynth).toDestination(),
+      pluck: new Tone.PluckSynth().toDestination(),
+      noise: new Tone.Noise("pink").toDestination(),
+      metal: new Tone.MetalSynth().toDestination()
+    };
+    let currentInstrument = instruments.synth;
+
+    // Define scales for each row
+    const scales = [
+      // Row 0: C Major
+      ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"],
+      // Row 1: F Major
+      ["F4", "G4", "A4", "Bb4", "C5", "D5", "E5", "F5"],
+      // Row 2: G Major
+      ["G4", "A4", "B4", "C5", "D5", "E5", "F#5", "G5"]
+    ];
+    const scaleNames = ["C Major", "F Major", "G Major"];
+
+    // Create grid cells (8 columns x 3 rows)
+    const grid = document.getElementById('grid');
+    for (let row = 0; row < 3; row++) {
+      for (let col = 0; col < 8; col++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.dataset.row = row;
+        cell.dataset.col = col;
+        cell.dataset.note = scales[row][col];
+        
+        // Add scale label to first cell in row
+        if (col === 0) {
+          const label = document.createElement('div');
+          label.className = 'scale-label';
+          label.textContent = scaleNames[row];
+          cell.appendChild(label);
+        }
+        
+        // Visual feedback on hover/click
+        cell.addEventListener('mouseenter', (e) => {
+          if (Tone.context.state !== 'running') return;
+          
+          const note = scales[row][col];
+          const velocity = 0.5 + ((2 - row) * 0.15); // Louder in lower rows
+          
+          if (currentInstrument === instruments.noise) {
+            if (!instruments.noise.started) {
+              instruments.noise.start();
+              instruments.noise.volume.value = -20;
+            }
+          } else {
+            currentInstrument.triggerAttack(note, Tone.now(), velocity);
+          }
+          
+          cell.style.background = `hsl(${col * 45}, 70%, ${80 - (row * 10)}%)`;
+        });
+        
+        cell.addEventListener('mouseleave', () => {
+          if (currentInstrument !== instruments.noise) {
+            currentInstrument.triggerRelease(scales[row][col]);
+          }
+          cell.style.background = '';
+        });
+        
+        grid.appendChild(cell);
+      }
+    }
+
+    document.getElementById('start').addEventListener('click', async () => {
+      await Tone.start();
+      document.getElementById('start').disabled = true;
+    });
+
+    // Instrument selector
+    document.getElementById('instrument').addEventListener('change', (e) => {
+      currentInstrument = instruments[e.target.value];
+    });
+  </script>
+</body>
+</html>
