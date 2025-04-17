@@ -64,13 +64,32 @@
   </div>
 
   <script>
+    window.addEventListener('beforeunload', saveAnimationState);
+    window.addEventListener('DOMContentLoaded', loadGradientPosition);
+
+    setTimeout(() => {
+      document.getElementById("authorsTitle").classList.add("show");
+    }, 1500);
+
+    setTimeout(() => {
+      document.getElementById("author1").classList.add("show");
+    }, 3000);
+
+    setTimeout(() => {
+      document.getElementById("author2").classList.add("show");
+    }, 4000);
+
+    setTimeout(() => {
+      document.getElementById("author3").classList.add("show");
+    }, 5000);
+
     // Save gradient animation state
     function saveAnimationState() {
       const time = Date.now();
       const startTime = time % 20000;
       document.cookie = `gradientLocation=${startTime}; path=/soundCanvas/; max-age=3601`; // Expires in 1 hr + 1 second second in case of 1-hour time desync
     }
-    
+
     function getCookie(name) {
       const value = document.cookie.match(`(?:^|;)\\s*${name}=([^;]*)`);
       return value ? decodeURIComponent(value[1]) : null;
@@ -84,25 +103,6 @@
         body.style.animationDelay = `-${savedTime}ms`;
       }
     }
-
-    window.addEventListener('beforeunload', saveAnimationState);
-    window.addEventListener('DOMContentLoaded', loadGradientPosition);
-
-    setTimeout(() => {
-      document.getElementById("authorsTitle").classList.add("show");
-    }, 2000);
-
-    setTimeout(() => {
-      document.getElementById("author1").classList.add("show");
-    }, 4000);
-
-    setTimeout(() => {
-      document.getElementById("author2").classList.add("show");
-    }, 5000);
-
-    setTimeout(() => {
-      document.getElementById("author3").classList.add("show");
-    }, 6000);
   </script>
 </body>
 </html>
