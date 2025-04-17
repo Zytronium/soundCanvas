@@ -59,12 +59,33 @@
       <h1 class="display-3 fw-bold">SOUNDCANVAS</h1>
       <div class="button-group" id="buttonGroup">
         <a href="canvas.html" class="btn btn-rounded">Start</a>
-        <a href="about.html" class="btn btn-rounded">About</a>
+        <button onclick="aboutTransition()" class="btn btn-rounded">About</button>
       </div>
     </div>
   </div>
 
   <script>
+    function getCookie(name) {
+      const value = document.cookie.match(`(?:^|;)\\s*${name}=([^;]*)`);
+      return value ? decodeURIComponent(value[1]) : null;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTime = parseInt(getCookie('gradientLocation'), 10);
+      if (!isNaN(savedTime)) {
+        const body = document.querySelector('body');
+        // Apply a negative delay to "fast forward" the animation
+        body.style.animationDelay = `-${savedTime}ms`;
+      }
+    });
+    // Save gradient animation position and go to about page
+    window.aboutTransition = () => {
+      const time = Date.now();
+      const startTime = time % 20000;
+      document.cookie = `gradientLocation=${startTime};path=/`;
+
+      window.location.href = '/about.html';
+    }
     // Show buttons after 2 seconds
     setTimeout(() => {
       document.getElementById('buttonGroup').classList.add('show');
