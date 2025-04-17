@@ -32,8 +32,9 @@
       <option value="synth">Basic Synth</option>
       <option value="fm">FM Synth</option>
       <option value="pluck">Pluck Synth</option>
-      <option value="noise">Noise</option>
+      <option value="drums">drums</option>
       <option value="metal">Metal Synth</option>
+      <option value="poly">Poly Synth</option>
     </select>
     <button id="start">Start Audio</button>
   </div>
@@ -52,9 +53,10 @@
     let currentInstrument;
     const instruments = {
       synth: new Tone.PolySynth(Tone.Synth).toDestination(),
+      drums: new Tone.MembraneSynth().toDestination(),
+      poly: new Tone.PolySynth(Tone.Synth, { maxPolyphony: 8 }),
       fm: new Tone.PolySynth(Tone.FMSynth).toDestination(),
       pluck: new Tone.PluckSynth().toDestination(),
-      noise: new Tone.Noise("pink").toDestination(),
       metal: new Tone.MetalSynth().toDestination()
     };
 
