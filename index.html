@@ -28,12 +28,14 @@
 
     .button-group {
       opacity: 0;
+      pointer-events: none;
       transition: opacity 1s ease;
       margin-top: 30px;
     }
 
     .button-group.show {
       opacity: 1;
+      pointer-events: all;
     }
 
     .btn-rounded {
@@ -65,10 +67,34 @@
   </div>
 
   <script>
+    window.addEventListener('beforeunload', saveAnimationState);
+    window.addEventListener('DOMContentLoaded', loadGradientPosition);
+
     // Show buttons after 2 seconds
     setTimeout(() => {
       document.getElementById('buttonGroup').classList.add('show');
-    }, 2000);
+    }, 1500);
+
+    function loadGradientPosition() {
+      const savedTime = parseInt(getCookie('gradientLocation'), 10);
+      if (!isNaN(savedTime)) {
+        const body = document.querySelector('body');
+        // Apply a negative delay to fast forward the animation
+        body.style.animationDelay = `-${savedTime}ms`;
+      }
+    }
+
+    function getCookie(name) {
+      const value = document.cookie.match(`(?:^|;)\\s*${name}=([^;]*)`);
+      return value ? decodeURIComponent(value[1]) : null;
+    }
+
+    // Save gradient animation state
+    function saveAnimationState() {
+      const time = Date.now();
+      const startTime = time % 20000;
+      document.cookie = `gradientLocation=${startTime}; path=/soundCanvas/; max-age=3601`; // Expires in 1 hr + 1 second in case of 1-hour time desync
+    }
   </script>
 </body>
 </html>
