@@ -38,7 +38,71 @@ body {
             radial-gradient(at bottom right, var(--theme2-br), transparent 55%),
             radial-gradient(at bottom left,  var(--theme2-bl), transparent 55%);
     background-blend-mode: darken;
-    width: 80vmin;
-    height: 80vmin;
+    width: 100%;
+    height: 100%;
     margin: auto;
 }
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    height: 100%;
+  }
+  .cell {
+    border: 1px solid #ddd;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .cell.active {
+    background: rgba(98, 0, 238, 0.2) !important;
+    box-shadow: 0 0 10px rgba(98, 0, 238, 0.3);
+    transform: scale(0.98);
+  }
+  .cell:hover {
+    background: rgba(0,0,0,0.1);
+  }
+  .cell::after {
+    content: attr(data-note);
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 12px;
+    color: #666;
+  }
+  #controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    display: flex;
+    gap: 10px;
+  }
+  button, select {
+    padding: 8px 15px;
+    background: #6200ee;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .scale-label {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    font-weight: bold;
+    font-size: 12px;
+  }
+  .keyboard-hint {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: rgba(255,255,255,0.9);
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+  }
