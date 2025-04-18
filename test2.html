@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Particles with Multiple Tone.js Instruments</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    #particles-js { 
+      position: absolute; 
+      width: 100%; 
+      height: 100%; 
+      background: #000;
+    }
+    #controls {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      z-index: 100;
+      background: rgba(0,0,0,0.7);
+      padding: 15px;
+      border-radius: 10px;
+      color: white;
+    }
+    select, button { margin: 5px; }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div id="controls">
+    <select id="instrument">
+      <option value="synth">Basic Synth</option>
+      <option value="fm">FM Synth</option>
+      <option value="pluck">Pluck Synth</option>
+      <option value="drums">drums</option>
+      <option value="metal">Metal Synth</option>
+      <option value="poly">Poly Synth</option>
+    </select>
+    <button id="start">Start Audio</button>
+  </div>
+
+  <script>
+    // Initialize particles
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 80, density: { enable: true, value_area: 800 } },
+        color: { value: "#ffffff" },
+        move: { enable: true, speed: 2 }
+      }
+    });
+
+    // Available instruments
+    let currentInstrument;
+    const instruments = {
+      synth: new Tone.PolySynth(Tone.Synth).toDestination(),
+      drums: new Tone.MembraneSynth().toDestination(),
+      poly: new Tone.PolySynth(Tone.Synth, { maxPolyphony: 8 }),
+      fm: new Tone.PolySynth(Tone.FMSynth).toDestination(),
+      pluck: new Tone.PluckSynth().toDestination(),
+      metal: new Tone.MetalSynth().toDestination()
+    };
+
+    // Scale notes
+    const scale = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
+
+    document.getElementById('start').addEventListener('click', async () => {
+      await Tone.start();
+      Tone.Transport.start();
+      document.getElementById('start').disabled = true;
+      
+      // Set initial instrument
+      currentInstrument = instruments.synth;
+      
+      // Change instrument when selected
+      document.getElementById('instrument').addEventListener('change', (e) => {
+        currentInstrument = instruments[e.target.value];
+      });
+      
+      // Particle interaction
+      document.addEventListener('mousemove', (e) => {
+        const xPercent = e.clientX / window.innerWidth;
+        const noteIndex = Math.floor(xPercent * scale.length);
+        const note = scale[noteIndex];
+        
+        if (currentInstrument === instruments.noise) {
+          // Special case for noise
+          if (!instruments.noise.started) {
+            instruments.noise.start();
+            instruments.noise.volume.value = -20;
+          }
+        } else {
+          // Play notes for other instruments
+          currentInstrument.triggerAttackRelease(
+            note, 
+            "16n", 
+            Tone.now()
+          );
+        }
+      });
+    });
+  </script>
+</body>
+</html>
