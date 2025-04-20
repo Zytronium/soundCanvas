@@ -38,7 +38,7 @@ body {
             radial-gradient(at bottom right, var(--theme2-br), transparent 55%),
             radial-gradient(at bottom left,  var(--theme2-bl), transparent 55%);
     background-blend-mode: darken;
-    width: 100vmin;
-    height: 100vmin;
+    width: 100%;
+    height: 100%;
     margin: auto;
 }
