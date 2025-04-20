@@ -7,9 +7,55 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
   <link rel="stylesheet" href="styles/style.css">
   <link rel="stylesheet" href="styles/canvas.css">
-  <script src="scripts/canvas.js"></script>
 </head>
 <body>
   <div class="canvas"></div>
+  <script>
+    function getPresetFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('preset');
+    }
+
+    function runPreset(preset) {
+      switch (preset) {
+        case 'classic':
+          import('./scripts/presets/classic.js').then(module => {
+            module.runClassic();
+          });
+          break;
+
+        case 'engine':
+          import('./scripts/presets/engine.js').then(module => {
+            module.runEngine();
+          });
+          break;
+
+        case 'ambient':
+          import('./scripts/presets/ambient.js').then(module => {
+            module.runAmbient();
+          });
+          break;
+
+        case 'experimental':
+          import('./scripts/presets/experimental.js').then(module => {
+            module.runExperimental();
+          });
+          break;
+
+        default:
+          console.warn('No preset matched or provided.');
+      }
+    }
+
+    const preset = getPresetFromURL();
+    if (preset) {
+      runPreset(preset);
+    } else { // default to classic
+      import('./scripts/presets/classic.js').then(module => {
+        module.runClassic();
+      });
+    }
+  </script>
+
 </body>
 </html>

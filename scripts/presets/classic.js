@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+export function runClassic() {
   const canvas = document.querySelector('.canvas');
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const normY = y / height;
 
     // Frequency range in Hz
-    const minFreq = 0;
-    const maxFreq = 550;
+    const minFreq = 100;
+    const maxFreq = 600;
     const freq = minFreq + normY * (maxFreq - minFreq);
 
     osc1.frequency.setValueAtTime(freq, ctx.currentTime);
@@ -36,10 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   canvas.addEventListener('mousemove', (e) => {
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientY - rect.bottom;
-    const y = e.clientY - rect.bottom;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-    updateSound(x, x, rect.height, rect.width);
+    updateSound(y, x, rect.height, rect.width);
   });
 
   // Smooth fade-out on mouse leave
@@ -58,4 +58,4 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.resume();
     }
   });
-});
+}
