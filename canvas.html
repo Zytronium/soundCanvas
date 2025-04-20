@@ -16,29 +16,48 @@
       return params.get('preset');
     }
 
+    function getFrequencyRangeFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      const low =  params.get('FrequencyLow');
+      const high = params.get('FrequencyHigh');
+      return [low, high];
+    }
+
     function runPreset(preset) {
       switch (preset) {
         case 'classic':
           import('./scripts/presets/classic.js').then(module => {
-            module.runClassic();
+            module.runClassic(getFrequencyRangeFromURL()[0], getFrequencyRangeFromURL()[1]);
           });
           break;
 
         case 'engine':
           import('./scripts/presets/engine.js').then(module => {
-            module.runEngine();
+            module.runEngine(getFrequencyRangeFromURL()[0], getFrequencyRangeFromURL()[1]);
           });
           break;
 
-        case 'ambient':
-          import('./scripts/presets/ambient.js').then(module => {
-            module.runAmbient();
+        case 'untitled':
+          import('./scripts/presets/untitled.js').then(module => {
+            module.runUntitled(getFrequencyRangeFromURL()[0], getFrequencyRangeFromURL()[1]);
+          });
+          break;
+
+        case 'synthwave':
+          import('./scripts/presets/synthwave.js').then(module => {
+            module.runSynthwave(getFrequencyRangeFromURL()[0], getFrequencyRangeFromURL()[1]);
+          });
+          break;
+
+        case 'synthwave2':
+          import('./scripts/presets/synthwave2.js').then(module => {
+            module.runSynthwave2(getFrequencyRangeFromURL()[0], getFrequencyRangeFromURL()[1]);
           });
           break;
 
         case 'experimental':
           import('./scripts/presets/experimental.js').then(module => {
-            module.runExperimental();
+            module.runExperimental(getFrequencyRangeFromURL()[0], getFrequencyRangeFromURL()[1]);
           });
           break;
 
@@ -52,7 +71,7 @@
       runPreset(preset);
     } else { // default to classic
       import('./scripts/presets/classic.js').then(module => {
-        module.runClassic();
+        module.runClassic(getFrequencyRangeFromURL()[0], getFrequencyRangeFromURL()[1]);
       });
     }
   </script>
