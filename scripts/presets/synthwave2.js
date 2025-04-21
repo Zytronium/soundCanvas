@@ -80,11 +80,6 @@ export function run(minFreq = 100, maxFreq = 1000) {
                 ctx.resume();
             }
 
-            // Cancel fading if it's still fading
-            const now = ctx.currentTime;
-            gain1.gain.cancelScheduledValues(now);
-            gain2.gain.cancelScheduledValues(now);
-
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
