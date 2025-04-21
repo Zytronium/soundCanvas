@@ -1,4 +1,4 @@
-export function runExperimental() {
+export function run(minFreq = 100, maxFreq = 600) {
     const canvas = document.querySelector('.canvas');
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -24,8 +24,6 @@ export function runExperimental() {
         const normY = y / height;
 
         // Frequency range in Hz
-        const minFreq = 100;
-        const maxFreq = 600;
         const freq = minFreq + normY * (maxFreq - minFreq);
 
         osc1.frequency.setValueAtTime(freq, ctx.currentTime);

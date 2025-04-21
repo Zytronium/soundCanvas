@@ -11,69 +11,25 @@
 <body>
   <div class="canvas"></div>
   <script>
-    function getPresetFromURL() {
+    function getParamsFromURL() {
       const params = new URLSearchParams(window.location.search);
-      return params.get('preset');
+      return {
+        preset: params.get('preset') || 'classic', // Default to classic if not found in URL
+        minFreq: parseFloat(params.get('minFreq')), // Returns null if not found
+        maxFreq: parseFloat(params.get('maxFreq')), // Returns null if not found
+      };
     }
 
-    function getFrequencyRangeFromURL() {
-      const params = new URLSearchParams(window.location.search);
-      const low =  params.get('FrequencyLow');
-      const high = params.get('FrequencyHigh');
-      return [low, high];
-    }
+    const { preset, minFreq, maxFreq } = getParamsFromURL();
 
-    function runPreset(preset) {
-      switch (preset) {
-        case 'classic':
-          import('./scripts/presets/classic.js').then(module => {
-            module.runClassic(getFrequencyRangeFromURL()[0], getFrequencyRangeFromURL()[1]);
-          });
-          break;
+    const freqArgs = [
+      !isNaN(minFreq) ? minFreq : undefined,
+      !isNaN(maxFreq) ? maxFreq : undefined,
+    ];
 
-        case 'engine':
-          import('./scripts/presets/engine.js').then(module => {
-            module.runEngine(getFrequencyRangeFromURL()[0], getFrequencyRangeFromURL()[1]);
-          });
-          break;
-
-        case 'untitled':
-          import('./scripts/presets/untitled.js').then(module => {
-            module.runUntitled(getFrequencyRangeFromURL()[0], getFrequencyRangeFromURL()[1]);
-          });
-          break;
-
-        case 'synthwave':
-          import('./scripts/presets/synthwave.js').then(module => {
-            module.runSynthwave(getFrequencyRangeFromURL()[0], getFrequencyRangeFromURL()[1]);
-          });
-          break;
-
-        case 'synthwave2':
-          import('./scripts/presets/synthwave2.js').then(module => {
-            module.runSynthwave2(getFrequencyRangeFromURL()[0], getFrequencyRangeFromURL()[1]);
-          });
-          break;
-
-        case 'experimental':
-          import('./scripts/presets/experimental.js').then(module => {
-            module.runExperimental(getFrequencyRangeFromURL()[0], getFrequencyRangeFromURL()[1]);
-          });
-          break;
-
-        default:
-          console.warn('No preset matched or provided.');
-      }
-    }
-
-    const preset = getPresetFromURL();
-    if (preset) {
-      runPreset(preset);
-    } else { // default to classic
-      import('./scripts/presets/classic.js').then(module => {
-        module.runClassic(getFrequencyRangeFromURL()[0], getFrequencyRangeFromURL()[1]);
-      });
-    }
+    import(`./scripts/presets/${preset}.js`).then(module => {
+      module.run(...freqArgs);
+    });
   </script>
 
 </body>

@@ -1,4 +1,4 @@
-export function runSynthwave() {
+export function run(minFreq = 100, maxFreq = 1200) {
     const canvas = document.querySelector('.canvas');
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -30,10 +30,6 @@ export function runSynthwave() {
     function updateSound(x, y, width, height) {
         const normX = x / width;
         const normY = y / height;
-
-        // Frequency range for synthwave (bass to lead range)
-        const minFreq = 100;
-        const maxFreq = 1200;
         const freq = minFreq + normY * (maxFreq - minFreq);
 
         osc1.frequency.setValueAtTime(freq, ctx.currentTime);

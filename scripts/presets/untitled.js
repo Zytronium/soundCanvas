@@ -1,4 +1,4 @@
-export function runUntitled() {
+export function run(minFreq = 80, maxFreq = 450) {
     const canvas = document.querySelector('.canvas');
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -43,9 +43,6 @@ export function runUntitled() {
     function updateSound(x, y, width, height) {
         const normX = x / width;
         const normY = y / height;
-
-        const minFreq = 80;
-        const maxFreq = 440;
         const freq = minFreq + normY * (maxFreq - minFreq);
 
         osc1.frequency.setValueAtTime(freq, ctx.currentTime);

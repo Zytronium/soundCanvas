@@ -1,4 +1,4 @@
-export function runSynthwave2() {
+export function run(minFreq = 100, maxFreq = 1000) {
     const canvas = document.querySelector('.canvas');
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -53,9 +53,6 @@ export function runSynthwave2() {
     function updateSound(x, y, width, height) {
         const normX = x / width;
         const normY = y / height;
-
-        const minFreq = 100;
-        const maxFreq = 1000;
         const freq = minFreq + normY * (maxFreq - minFreq);
 
         oscA.frequency.setValueAtTime(freq, ctx.currentTime);
