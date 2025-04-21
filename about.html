@@ -48,6 +48,21 @@
       flex-wrap: wrap;
       margin-top: 1rem;
     }
+
+    .btn-rounded {
+      border-radius: 30px;
+      padding: 12px 28px;
+      font-size: 1.1rem;
+      margin: 10px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 2px solid white;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .btn-rounded:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
   </style>
 </head>
 <body>
@@ -60,6 +75,7 @@
         <span id="author2" class="fade-in creator-name">John Wilson</span>
         <span id="author3" class="fade-in creator-name">Harrison Gearhart</span>
       </div>
+      <a id="return" href="index.html" class="btn btn-rounded fade-in">Return to Homepage</a>
     </div>
   </div>
 
@@ -83,11 +99,14 @@
       document.getElementById("author3").classList.add("show");
     }, 5000);
 
-    // Save gradient animation state
+    setTimeout(() => {
+      document.getElementById("return").classList.add("show");
+    }, 6000);
+
     function saveAnimationState() {
       const time = Date.now();
       const startTime = time % 20000;
-      document.cookie = `gradientLocation=${startTime}; path=/soundCanvas/; max-age=3601`; // Expires in 1 hr + 1 second second in case of 1-hour time desync
+      document.cookie = `gradientLocation=${startTime}; path=/soundCanvas/; max-age=3601`;
     }
 
     function getCookie(name) {
@@ -99,7 +118,6 @@
       const savedTime = parseInt(getCookie('gradientLocation'), 10);
       if (!isNaN(savedTime)) {
         const body = document.querySelector('body');
-        // Apply a negative delay to fast forward the animation
         body.style.animationDelay = `-${savedTime}ms`;
       }
     }
