@@ -64,6 +64,8 @@
       background-color: rgba(255, 255, 255, 0.3);
     }
   </style>
+  <script src="scripts/about.js"></script>
+  <script src="scripts/background.js"></script>
 </head>
 <body>
   <div class="container">
@@ -78,49 +80,5 @@
       <a id="return" href="index.html" class="btn btn-rounded fade-in">Return to Homepage</a>
     </div>
   </div>
-
-  <script>
-    window.addEventListener('beforeunload', saveAnimationState);
-    window.addEventListener('DOMContentLoaded', loadGradientPosition);
-
-    setTimeout(() => {
-      document.getElementById("authorsTitle").classList.add("show");
-    }, 1500);
-
-    setTimeout(() => {
-      document.getElementById("author1").classList.add("show");
-    }, 3000);
-
-    setTimeout(() => {
-      document.getElementById("author2").classList.add("show");
-    }, 4000);
-
-    setTimeout(() => {
-      document.getElementById("author3").classList.add("show");
-    }, 5000);
-
-    setTimeout(() => {
-      document.getElementById("return").classList.add("show");
-    }, 6000);
-
-    function saveAnimationState() {
-      const time = Date.now();
-      const startTime = time % 20000;
-      document.cookie = `gradientLocation=${startTime}; path=/soundCanvas/; max-age=3601`;
-    }
-
-    function getCookie(name) {
-      const value = document.cookie.match(`(?:^|;)\\s*${name}=([^;]*)`);
-      return value ? decodeURIComponent(value[1]) : null;
-    }
-
-    function loadGradientPosition() {
-      const savedTime = parseInt(getCookie('gradientLocation'), 10);
-      if (!isNaN(savedTime)) {
-        const body = document.querySelector('body');
-        body.style.animationDelay = `-${savedTime}ms`;
-      }
-    }
-  </script>
 </body>
 </html>
