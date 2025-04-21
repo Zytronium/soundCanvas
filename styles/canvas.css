@@ -1,26 +1,18 @@
-:root {
-    --theme0-tl: red;
-    --theme0-tr: lime;
-    --theme0-br: blue;
-    --theme0-bl: yellow;
-
-    --theme1-tl: #ff0059;
-    --theme1-tr: #ff00bb;
-    --theme1-br: #c300ff;
-    --theme1-bl: #5700e2;
-
-    --theme2-tl: #ff0026;
-    --theme2-tr: #ff5e00;
-    --theme2-br: #ff00c8;
-    --theme2-bl: #8700e7;
-}
 body {
-    height: 100vh;
     margin: 0;
     padding: 0;
-    display: flex;
     background-color: #191b21;
+    display: flex;
     justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#main-container {
+    max-width: 100%;
+    width: auto;
+    max-height: 97.5%;
+    background-color: #e3e5e5;
 }
 
 .canvas {
@@ -28,17 +20,55 @@ body {
     background:
             radial-gradient(at center,       white,            white 100%),
 
-            radial-gradient(at top left,     var(--theme2-tl), transparent 55%),
-            radial-gradient(at top right,    var(--theme2-tr), transparent 55%),
-            radial-gradient(at bottom right, var(--theme2-br), transparent 55%),
-            radial-gradient(at bottom left,  var(--theme2-bl), transparent 55%),
+            radial-gradient(at top left,     var(--theme-tl), transparent 55%),
+            radial-gradient(at top right,    var(--theme-tr), transparent 55%),
+            radial-gradient(at bottom right, var(--theme-br), transparent 55%),
+            radial-gradient(at bottom left,  var(--theme-bl), transparent 55%),
 
-            radial-gradient(at top left,     var(--theme2-tl), transparent 55%),
-            radial-gradient(at top right,    var(--theme2-tr), transparent 55%),
-            radial-gradient(at bottom right, var(--theme2-br), transparent 55%),
-            radial-gradient(at bottom left,  var(--theme2-bl), transparent 55%);
+            radial-gradient(at top left,     var(--theme-tl), transparent 55%),
+            radial-gradient(at top right,    var(--theme-tr), transparent 55%),
+            radial-gradient(at bottom right, var(--theme-br), transparent 55%),
+            radial-gradient(at bottom left,  var(--theme-bl), transparent 55%);
     background-blend-mode: darken;
-    width: 80vmin;
-    height: 80vmin;
-    margin: auto;
+    width: 92.5vmin !important;
+    height: 92.5vmin !important;
+}
+
+@media (orientation: landscape) {
+    #controls {
+        flex: 2;
+        height: 100% !important;
+    }
+
+    .button-preset-group {
+        flex-direction: column !important;
+        align-items: start !important;
+    }
+
+    #frequency-range {
+        flex-direction: column;
+    }
+}
+
+@media (orientation: portrait) {
+    #main-container {
+        flex-direction: column !important;
+        align-items: center !important;
+        margin: 0;
+    }
+
+    #controls {
+        width: 100%;
+        margin: 0 !important;
+    }
+
+    .canvas {
+        width: 80vmin !important;
+        height: 80vmin !important;
+    }
+
+    .button-preset-group {
+        flex-direction: row !important;
+        align-items: center !important;
+    }
 }
