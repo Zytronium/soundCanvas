@@ -1,9 +1,8 @@
-export function run(minFreq = 100, maxFreq = 1000) {
+export function run(minFreq = 100, maxFreq = 800) {
     const canvas = document.querySelector('.canvas');
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
     // Create a super-saw with detuning
-    const baseFreq = 220;
     const oscA = ctx.createOscillator();
     const oscB = ctx.createOscillator();
     const subOsc = ctx.createOscillator(); // An octave down
@@ -17,7 +16,7 @@ export function run(minFreq = 100, maxFreq = 1000) {
 
     // Config
     oscA.type = 'sawtooth';
-    oscB.type = 'sawtooth';
+    oscB.type = 'square';
     subOsc.type = 'sine';
 
     oscA.detune.setValueAtTime(-10, ctx.currentTime);
