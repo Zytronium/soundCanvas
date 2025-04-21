@@ -1,4 +1,10 @@
 export function run(minFreq = 100, maxFreq = 1200) {
+    // Apply theme
+    const theme = document.createElement('link');
+    theme.rel = 'stylesheet';
+    theme.href = './styles/themes/synthwave.css';
+    document.head.appendChild(theme);
+
     const canvas = document.querySelector('.canvas');
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
 

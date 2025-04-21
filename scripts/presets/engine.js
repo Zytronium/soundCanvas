@@ -1,4 +1,9 @@
-export function run(minFreq = 0, maxFreq = 900) {
+export function run(minFreq = 0, maxFreq = 800) {
+    // Apply theme
+    const theme = document.createElement('link');
+    theme.rel = 'stylesheet';
+    theme.href = './styles/themes/engine.css';
+    document.head.appendChild(theme);
     const canvas = document.querySelector('.canvas');
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
