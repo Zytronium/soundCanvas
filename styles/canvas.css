@@ -1,10 +1,18 @@
 body {
-    height: 100vh;
     margin: 0;
     padding: 0;
-    display: flex;
     background-color: #191b21;
+    display: flex;
     justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#main-container {
+    max-width: 100%;
+    width: auto;
+    max-height: 97.5%;
+    background-color: #e3e5e5;
 }
 
 .canvas {
@@ -22,7 +30,45 @@ body {
             radial-gradient(at bottom right, var(--theme-br), transparent 55%),
             radial-gradient(at bottom left,  var(--theme-bl), transparent 55%);
     background-blend-mode: darken;
-    width: 80vmin;
-    height: 80vmin;
-    margin: auto;
+    width: 92.5vmin !important;
+    height: 92.5vmin !important;
+}
+
+@media (orientation: landscape) {
+    #controls {
+        flex: 2;
+        height: 100% !important;
+    }
+
+    .button-preset-group {
+        flex-direction: column !important;
+        align-items: start !important;
+    }
+
+    #frequency-range {
+        flex-direction: column;
+    }
+}
+
+@media (orientation: portrait) {
+    #main-container {
+        flex-direction: column !important;
+        align-items: center !important;
+        margin: 0;
+    }
+
+    #controls {
+        width: 100%;
+        margin: 0 !important;
+    }
+
+    .canvas {
+        width: 80vmin !important;
+        height: 80vmin !important;
+    }
+
+    .button-preset-group {
+        flex-direction: row !important;
+        align-items: center !important;
+    }
 }
