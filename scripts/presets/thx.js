@@ -1,4 +1,4 @@
-export function run(minFreq = 40, maxFreq = 1600) {
+export function run() {
   const canvas = document.querySelector('.canvas');
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -8,21 +8,34 @@ export function run(minFreq = 40, maxFreq = 1600) {
   theme.href = './styles/themes/thx.css';
   document.head.appendChild(theme);
 
+  // Set frequency values in control panel
+  const minFreqElmnt = document.getElementById('minFreq');
+  const maxFreqElmnt = document.getElementById('maxFreq');
+  const minFreqResetBtn = document.getElementById('minFreqReset');
+  const maxFreqResetBtn = document.getElementById('maxFreqReset');
+
+  minFreqElmnt.value = 37.5;
+  maxFreqElmnt.value = 1800;
+  minFreqElmnt.disabled = true;
+  maxFreqElmnt.disabled = true;
+  minFreqResetBtn.disabled = true;
+  maxFreqResetBtn.disabled = true;
+
   // Timing constants (in seconds)
-  const INITIAL_HOLD = 12.5;   // initial chaotic cluster hold
+  const INITIAL_HOLD = 3;   // initial chaotic cluster hold
   const SWEEP_TIME   = 6.0;    // glissando duration
-  const TARGET_HOLD  = 5.5;    // final chord hold
+  const TARGET_HOLD  = 3.5;    // final chord hold
   const DECAY_TIME   = 6.0;    // fade-out duration
 
   const NUM_OSCILLATORS = 30;
   const masterGain = ctx.createGain();
-  masterGain.gain.setValueAtTime(0.7, ctx.currentTime);
+  masterGain.gain.setValueAtTime(1, ctx.currentTime);
   masterGain.connect(ctx.destination);
 
   // Create reverb effect
   const convolver = ctx.createConvolver();
   const reverbGain = ctx.createGain();
-  reverbGain.gain.value = 0.3; // subtle reverb blend
+  reverbGain.gain.value = 2.25; // Reverb blend
   convolver.connect(reverbGain).connect(ctx.destination);
   convolver.buffer = createImpulse();
 

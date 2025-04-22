@@ -1,4 +1,4 @@
-export function run(minFreq = 0, maxFreq = 800) {
+export function run(minFrequency = 0, maxFreq = 800) {
     // Apply theme
     const theme = document.createElement('link');
     theme.rel = 'stylesheet';
@@ -6,6 +6,16 @@ export function run(minFreq = 0, maxFreq = 800) {
     document.head.appendChild(theme);
     const canvas = document.querySelector('.canvas');
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+    // Set frequency values in control panel
+    const minFreqElmnt = document.getElementById('minFreq');
+    const maxFreqElmnt = document.getElementById('maxFreq');
+    const minFreqResetBtn = document.getElementById('minFreqReset');
+
+    minFreqElmnt.value = 0;
+    maxFreqElmnt.value = maxFreq;
+    minFreqElmnt.disabled = true;
+    minFreqResetBtn.disabled = true;
 
     // Oscillators for sound blending
     const osc1 = ctx.createOscillator(); // Tone 1
@@ -25,7 +35,7 @@ export function run(minFreq = 0, maxFreq = 800) {
     function updateSound(x, y, width, height) {
         const normX = x / width;
         const normY = y / height;
-        const freq = minFreq + normY * (maxFreq - minFreq);
+        const freq = normY * maxFreq;
 
         osc1.frequency.setValueAtTime(freq, ctx.currentTime);
         osc2.frequency.setValueAtTime(freq * 0.75, ctx.currentTime);
@@ -38,7 +48,6 @@ export function run(minFreq = 0, maxFreq = 800) {
     canvas.addEventListener('mousemove', (e) => {
         const rect = canvas.getBoundingClientRect();
         const x = e.clientY - rect.bottom;
-        const y = e.clientY - rect.bottom;
 
         updateSound(x, x, rect.height, rect.width);
     });

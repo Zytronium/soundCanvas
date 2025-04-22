@@ -5,6 +5,13 @@ export function run(minFreq = 100, maxFreq = 1200) {
     theme.href = './styles/themes/synthwave.css';
     document.head.appendChild(theme);
 
+    // Set frequency values in control panel
+    const minFreqElmnt = document.getElementById('minFreq');
+    const maxFreqElmnt = document.getElementById('maxFreq');
+
+    minFreqElmnt.value = minFreq;
+    maxFreqElmnt.value = maxFreq;
+
     const canvas = document.querySelector('.canvas');
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
@@ -125,7 +132,8 @@ export function run(minFreq = 100, maxFreq = 1200) {
     });
 
     canvas.addEventListener('mousemove', (e) => {
-        if (!isMouseDown) return;
+        if (!isMouseDown)
+            return;
 
         const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;

@@ -40,6 +40,9 @@ export function runPreset({
     const normX = x / width;
     const normY = y / height;
     const freq = minFreq + normX * (maxFreq - minFreq);
+    console.log('freq: ', freq);
+    console.log('min freq: ', minFreq);
+    console.log('max freq: ', maxFreq);
 
     osc1.frequency.setValueAtTime(freq, ctx.currentTime);
     osc2.frequency.setValueAtTime(freq * 0.75, ctx.currentTime);
