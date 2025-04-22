@@ -29,13 +29,13 @@ export function run() {
 
   const NUM_OSCILLATORS = 30;
   const masterGain = ctx.createGain();
-  masterGain.gain.setValueAtTime(0.7, ctx.currentTime);
+  masterGain.gain.setValueAtTime(1, ctx.currentTime);
   masterGain.connect(ctx.destination);
 
   // Create reverb effect
   const convolver = ctx.createConvolver();
   const reverbGain = ctx.createGain();
-  reverbGain.gain.value = 0.3; // subtle reverb blend
+  reverbGain.gain.value = 2.25; // Reverb blend
   convolver.connect(reverbGain).connect(ctx.destination);
   convolver.buffer = createImpulse();
 
