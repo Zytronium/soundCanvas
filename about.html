@@ -48,7 +48,24 @@
       flex-wrap: wrap;
       margin-top: 1rem;
     }
+
+    .btn-rounded {
+      border-radius: 30px;
+      padding: 12px 28px;
+      font-size: 1.1rem;
+      margin: 10px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border: 2px solid white;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .btn-rounded:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
   </style>
+  <script src="scripts/about.js"></script>
+  <script src="scripts/background.js"></script>
 </head>
 <body>
   <div class="container">
@@ -60,49 +77,8 @@
         <span id="author2" class="fade-in creator-name">John Wilson</span>
         <span id="author3" class="fade-in creator-name">Harrison Gearhart</span>
       </div>
+      <a id="return" href="index.html" class="btn btn-rounded fade-in">Return to Homepage</a>
     </div>
   </div>
-
-  <script>
-    window.addEventListener('beforeunload', saveAnimationState);
-    window.addEventListener('DOMContentLoaded', loadGradientPosition);
-
-    setTimeout(() => {
-      document.getElementById("authorsTitle").classList.add("show");
-    }, 1500);
-
-    setTimeout(() => {
-      document.getElementById("author1").classList.add("show");
-    }, 3000);
-
-    setTimeout(() => {
-      document.getElementById("author2").classList.add("show");
-    }, 4000);
-
-    setTimeout(() => {
-      document.getElementById("author3").classList.add("show");
-    }, 5000);
-
-    // Save gradient animation state
-    function saveAnimationState() {
-      const time = Date.now();
-      const startTime = time % 20000;
-      document.cookie = `gradientLocation=${startTime}; path=/soundCanvas/; max-age=3601`; // Expires in 1 hr + 1 second second in case of 1-hour time desync
-    }
-
-    function getCookie(name) {
-      const value = document.cookie.match(`(?:^|;)\\s*${name}=([^;]*)`);
-      return value ? decodeURIComponent(value[1]) : null;
-    }
-
-    function loadGradientPosition() {
-      const savedTime = parseInt(getCookie('gradientLocation'), 10);
-      if (!isNaN(savedTime)) {
-        const body = document.querySelector('body');
-        // Apply a negative delay to fast forward the animation
-        body.style.animationDelay = `-${savedTime}ms`;
-      }
-    }
-  </script>
 </body>
 </html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sound Canvas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+        crossorigin="anonymous">
+  <link rel="stylesheet" href="styles/style.css">
+  <link rel="stylesheet" href="styles/canvas.css">
+  <script src="scripts/background.js"></script>
+</head>
+<body>
+<div class="container-fluid d-flex flex-column flex-md-row align-items-start gap-3 p-3 rounded-4"
+     id="main-container">
+  <div id="controls"
+       class="p-3 bg-white rounded shadow flex-fill flex-md-grow-1">
+
+    <a href="./" class="btn btn-primary align-self-start mb-4 m-auto"
+       id="home-btn">Home</a>
+
+    <div class="d-flex flex-column">
+      <label for="preset" class="form-label">Preset</label>
+      <select id="preset" class="form-select">
+        <option value="classic">Classic</option>
+        <option value="untitled">Untitled</option>
+        <option value="synthwave">Synthwave1</option>
+        <option value="synthwave2">Synthwave2</option>
+        <option value="experimental">Experimental</option>
+        <option value="engine">Engine</option>
+        <option value="thx">THX Sound Effect</option>
+        <option value="rickroll-me">???</option>
+      </select>
+    </div>
+
+
+    <div class="d-flex gap-3 my-3" id="frequency-range">
+      <div class="d-flex flex-column">
+        <label for="minFreq" class="form-label">Min Freq</label>
+        <input type="number" id="minFreq" min="0" max="5000" value="100"
+               step="1" class="form-control"/>
+      </div>
+
+      <div class="d-flex flex-column">
+        <label for="maxFreq" class="form-label">Max Freq</label>
+        <input type="number" id="maxFreq" min="0" max="5000" value="1000"
+               step="1" class="form-control"/>
+      </div>
+    </div>
+
+    <button class="btn btn-primary mt-2" id="apply-btn">Apply</button>
+
+  </div>
+
+  <div class="canvas flex-shrink-0 rounded-3"></div>
+</div>
+
+<script type="module">
+  function getParamsFromURL () {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      preset: params.get('preset') || 'classic',
+      minFreq: parseFloat(params.get('minFreq')),
+      maxFreq: parseFloat(params.get('maxFreq')),
+    };
+  }
+
+  const {preset, minFreq, maxFreq} = getParamsFromURL();
+  const freqArgs = [
+    !isNaN(minFreq) ? minFreq : undefined,
+    !isNaN(maxFreq) ? maxFreq : undefined,
+  ];
+
+
+  const reusablePresets = ['classic', 'experimental']
+  if (reusablePresets.includes(preset)) {
+    let oscillators;
+
+    switch (preset) {
+      case 'experimental':
+        oscillators = ['sawtooth', 'square'];
+        break;
+
+      default: // 'classic':
+        oscillators = ['sine', 'triangle'];
+        break;
+    }
+
+    let frequencyRange;
+
+    switch (preset) {
+      case 'experimental':
+        frequencyRange = [100, 800];
+        break;
+
+      default: // 'classic':
+        frequencyRange = [100, 600];
+        break;
+    }
+
+    const args = {
+      themePath: `./styles/themes/${preset}.css`,
+      osc1Type: oscillators[0],
+      osc2Type: oscillators[1],
+      initialMinFreq: frequencyRange[0],
+      initialMaxFreq: frequencyRange[1]
+    }
+    import(`./scripts/canvas.js`).then(module => {
+      module.runPreset(args);
+    });
+  } else {
+    try {
+      const module = await import(`./scripts/presets/${preset}.js`);
+      module.run(...freqArgs);
+    } catch (e) {
+      console.warn('Preset not found, falling back to classic:', e);
+      const fallback = await import('./scripts/canvas.js');
+      fallback.runPreset({
+        themePath: `./styles/themes/classic.css`,
+        osc1Type: 'sine',
+        osc2Type: 'triangle',
+        initialMinFreq: 100,
+        initialMaxFreq: 600
+      });
+    }
+  }
+
+  const applyBtn = document.getElementById('apply-btn');
+  const presetElmnt = document.getElementById('preset');
+  const minFreqElmnt = document.getElementById('minFreq');
+  const maxFreqElmnt = document.getElementById('maxFreq');
+  applyBtn.onclick = () => {
+    const newPreset =  presetElmnt.value;
+    const newMinFreq = minFreqElmnt.value;
+    const newMaxFreq = maxFreqElmnt.value;
+
+    window.location.href = `./canvas.html?preset=${newPreset}&minFreq=${newMinFreq}&maxFreq=${newMaxFreq}`;
+  }
+
+  presetElmnt.value = preset;
+  minFreqElmnt.value = minFreq;
+  maxFreqElmnt.value = maxFreq;
+
+</script>
+</body>
+</html>
