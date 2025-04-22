@@ -35,7 +35,7 @@ export function run() {
   // Create reverb effect
   const convolver = ctx.createConvolver();
   const reverbGain = ctx.createGain();
-  reverbGain.gain.value = 2.25; // Reverb blend
+  reverbGain.gain.value = 2; // Reverb blend
   convolver.connect(reverbGain).connect(ctx.destination);
   convolver.buffer = createImpulse();
 
