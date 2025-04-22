@@ -6,7 +6,7 @@ body {
     align-items: center;
     height: 100vh;
     background:
-            linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),
+            linear-gradient(rgba(0, 0, 0, 0.333), rgba(0, 0, 0, 0.333)),
             linear-gradient(135deg, #ff0026, #ff5e00, #ff00c8, #8700e7);
     background-size: 400% 400%;
     background-blend-mode: darken;
@@ -14,7 +14,6 @@ body {
     text-align: center;
     font-family: 'Segoe UI', sans-serif;
 }
-
 
 @keyframes gradientMove {
     0% { background-position: 0% 50%; }
