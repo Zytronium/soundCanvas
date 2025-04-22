@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sound Canvas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles/tone.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+</head>
+<body class="bg-dark vh-100">
+  <div class="container-fluid position-fixed top-0 start-0 mt-3 ms-3 d-flex gap-3">
+    <div class="bg-light rounded p-2">
+      <label class="fw-bold">Key:</label>
+      <select id="key" class="form-select form-select-sm">
+        <option value="C">C</option>
+        <option value="D">D</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+        <option value="G">G</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+      </select>
+    </div>
+    
+    <div class="bg-light rounded p-2">
+      <label class="fw-bold">Mode:</label>
+      <select id="mode" class="form-select form-select-sm">
+        <option value="major">Major</option>
+        <option value="minor">Minor</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="grid" class="canvas container-fluid h-100 p-0"></div>
+
+  <div class="position-fixed bottom-0 start-50 translate-middle-x mb-3">
+    <div class="bg-light rounded p-2 text-center mb-2">
+     <strong class="d-none d-sm-inline">Keyboard Controls: </strong>
+      <span class="d-none d-md-inline">1-8: Scale Notes | Q-I: Chords</span>
+      <span class="d-md-none">1-8: Scale • Q-I: Chords</span>
+    </div>
+
+    <div class="d-flex gap-2 flex-wrap justify-content-center">
+        <select id="instrument" class="form-select form-select-sm flex-grow-0">
+          <option value="synth">Synth</option>
+          <option value="fm">FM Synth</option>
+          <option value="pluck">Pluck</option>
+          <option value="am">AMSynth</option>
+        </select>
+        <button id="back" class="btn btn-primary btn-sm">Home</button>
+        <button id="start" class="btn btn-primary btn-sm">Start Audio</button>
+        <button id="restart" class="btn btn-primary btn-sm">Restart</button>
+      </div>
+    </div>
+
+  <script src="./scripts/tone.js"></script>
+</body>
+</html>
