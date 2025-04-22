@@ -21,6 +21,10 @@ body {
     100% { background-position: 0% 50%; }
 }
 
+.freq-group {
+    flex: 1 1 100%;
+}
+
 #main-container {
     max-width: 100%;
     width: auto;
@@ -48,6 +52,7 @@ body {
     border: 2px solid #434b59;
 }
 
+
 @media (orientation: landscape) {
     #controls {
         flex: 2;
@@ -57,6 +62,15 @@ body {
     .button-preset-group {
         flex-direction: column !important;
         align-items: start !important;
+    }
+
+    #frequency-range {
+        flex-direction: column;
+    }
+
+    .reset-wrapper {
+        flex-direction: row !important;
+        align-items: center;
     }
 
     #frequency-range {
@@ -84,5 +98,14 @@ body {
     .button-preset-group {
         flex-direction: row !important;
         align-items: center !important;
+    }
+
+    .reset-wrapper {
+        flex-direction: column !important;
+        align-items: stretch;
+    }
+
+    #frequency-range {
+        flex-direction: row !important;
     }
 }

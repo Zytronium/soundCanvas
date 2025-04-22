@@ -29,24 +29,30 @@
         <option value="synthwave">Synthwave1</option>
         <option value="synthwave2">Synthwave2</option>
         <option value="experimental">Experimental</option>
+        <option value="" disabled aria-disabled="true">--- Special Effects ---</option>
         <option value="engine">Engine</option>
         <option value="thx">THX Sound Effect</option>
         <option value="rickroll-me">???</option>
       </select>
     </div>
 
-
-    <div class="d-flex gap-3 my-3" id="frequency-range">
-      <div class="d-flex flex-column">
-        <label for="minFreq" class="form-label">Min Freq</label>
-        <input type="number" id="minFreq" min="0" max="5000" value="100"
-               step="1" class="form-control"/>
+    <div class="d-flex gap-3 my-3 justify-content-space-between" id="frequency-range">
+      <div class="d-flex flex-column align-items-center freq-group">
+        <label for="minFreq" class="form-label">Min Frequency</label>
+        <div class="d-flex flex-row flex-md-column reset-wrapper">
+          <input type="number" id="minFreq" min="0" max="30000" value="100"
+                 step="1" class="form-control me-2 mb-md-2"/>
+          <button type="button" class="btn btn-outline-secondary reset-btn" id="minFreqReset" data-target="minFreq">Reset</button>
+        </div>
       </div>
 
-      <div class="d-flex flex-column">
-        <label for="maxFreq" class="form-label">Max Freq</label>
-        <input type="number" id="maxFreq" min="0" max="5000" value="1000"
-               step="1" class="form-control"/>
+      <div class="d-flex flex-column align-items-center freq-group">
+        <label for="maxFreq" class="form-label">Max Frequency</label>
+        <div class="d-flex flex-row flex-md-column reset-wrapper">
+          <input type="number" id="maxFreq" min="0" max="30000" value="1000"
+                 step="1" class="form-control me-2 mb-md-2"/>
+          <button type="button" class="btn btn-outline-secondary reset-btn" id="maxFreqReset" data-target="maxFreq">Reset</button>
+        </div>
       </div>
     </div>
 
@@ -67,12 +73,39 @@
     };
   }
 
+  function getFrequencyRange(preset) {
+    switch (preset) {
+      case 'engine':
+        return [0, 800];
+
+      case 'rickroll-me':
+        return [100, 1000];
+
+      case 'synthwave':
+        return [100, 1200];
+
+      case 'synthwave2':
+        return [100, 800];
+
+      case 'thx':
+        return [37.5, 1800];
+
+      case 'untitled':
+        return [40, 250];
+
+      case 'experimental':
+        return [100, 600];
+
+      default: // 'classic':
+        return [100, 900];
+    }
+  }
+
   const {preset, minFreq, maxFreq} = getParamsFromURL();
   const freqArgs = [
     !isNaN(minFreq) ? minFreq : undefined,
     !isNaN(maxFreq) ? maxFreq : undefined,
   ];
-
 
   const reusablePresets = ['classic', 'experimental']
   if (reusablePresets.includes(preset)) {
@@ -88,24 +121,14 @@
         break;
     }
 
-    let frequencyRange;
-
-    switch (preset) {
-      case 'experimental':
-        frequencyRange = [100, 800];
-        break;
-
-      default: // 'classic':
-        frequencyRange = [100, 600];
-        break;
-    }
+    let frequencyRange = getFrequencyRange(preset);
 
     const args = {
       themePath: `./styles/themes/${preset}.css`,
       osc1Type: oscillators[0],
       osc2Type: oscillators[1],
-      initialMinFreq: frequencyRange[0],
-      initialMaxFreq: frequencyRange[1]
+      initialMinFreq: !isNaN(minFreq) ? minFreq : frequencyRange[0],
+      initialMaxFreq: !isNaN(maxFreq) ? maxFreq : frequencyRange[1]
     }
     import(`./scripts/canvas.js`).then(module => {
       module.runPreset(args);
@@ -122,7 +145,7 @@
         osc1Type: 'sine',
         osc2Type: 'triangle',
         initialMinFreq: 100,
-        initialMaxFreq: 600
+        initialMaxFreq: 900
       });
     }
   }
@@ -131,6 +154,8 @@
   const presetElmnt = document.getElementById('preset');
   const minFreqElmnt = document.getElementById('minFreq');
   const maxFreqElmnt = document.getElementById('maxFreq');
+  const minFreqResetBtn = document.getElementById('minFreqReset');
+  const maxFreqResetBtn = document.getElementById('maxFreqReset');
   applyBtn.onclick = () => {
     const newPreset =  presetElmnt.value;
     const newMinFreq = minFreqElmnt.value;
@@ -139,9 +164,43 @@
     window.location.href = `./canvas.html?preset=${newPreset}&minFreq=${newMinFreq}&maxFreq=${newMaxFreq}`;
   }
 
+  presetElmnt.onchange = (event) => {
+    const newPreset = event.currentTarget.value;
+    minFreqElmnt.value = getFrequencyRange(newPreset)[0];
+    maxFreqElmnt.value = getFrequencyRange(newPreset)[1];
+
+    // Note: this only applies to BEFORE you click apply. It does not persist. This is done again by the preset script ran after changing the URL to change presets.
+    // Disable frequency change on presets where frequency range can't change
+    if (['rickroll-me', 'thx'].includes(newPreset)) {
+      minFreqElmnt.disabled = true;
+      maxFreqElmnt.disabled = true;
+      minFreqResetBtn.disabled = true;
+      maxFreqResetBtn.disabled = true;
+    } else if (newPreset === 'engine') { // Disable min freq change for engine (locked to 0 Hz min)
+      minFreqElmnt.disabled = true;
+      maxFreqElmnt.disabled = false;
+      minFreqResetBtn.disabled = true;
+      maxFreqResetBtn.disabled = false;
+    } else { // Enable both frequency change inputs on other presets
+      minFreqElmnt.disabled = false;
+      maxFreqElmnt.disabled = false;
+      minFreqResetBtn.disabled = false;
+      maxFreqResetBtn.disabled = false;
+    }
+  }
+
   presetElmnt.value = preset;
-  minFreqElmnt.value = minFreq;
-  maxFreqElmnt.value = maxFreq;
+  console.log(preset);
+  if (!minFreqElmnt.disabled)
+    minFreqElmnt.value = !isNaN(minFreq) ? minFreq : getFrequencyRange(preset)[0];
+  else
+    minFreqElmnt.value = getFrequencyRange(preset)[0];
+
+
+  if (!maxFreqElmnt.disabled)
+    maxFreqElmnt.value = !isNaN(maxFreq) ? maxFreq : getFrequencyRange(preset)[1];
+  else
+    maxFreqElmnt.value = getFrequencyRange(preset)[1];
 
 </script>
 </body>
