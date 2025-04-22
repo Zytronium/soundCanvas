@@ -18,18 +18,19 @@
   <div id="controls"
        class="p-3 bg-white rounded shadow flex-fill flex-md-grow-1">
 
-      <a href="./" class="btn btn-primary align-self-start mb-4 m-auto" id="home-btn">Home</a>
+    <a href="./" class="btn btn-primary align-self-start mb-4 m-auto"
+       id="home-btn">Home</a>
 
-      <div class="d-flex flex-column">
-        <label for="preset" class="form-label">Preset</label>
-        <select id="preset" class="form-select">
-          <option value="classic">Classic</option>
-          <option value="untitled">Untitled</option>
-          <option value="synthwave">Synthwave1</option>
-          <option value="synthwave2">Synthwave2</option>
-          <option value="experimental">Experimental</option>
-        </select>
-      </div>
+    <div class="d-flex flex-column">
+      <label for="preset" class="form-label">Preset</label>
+      <select id="preset" class="form-select">
+        <option value="classic">Classic</option>
+        <option value="untitled">Untitled</option>
+        <option value="synthwave">Synthwave1</option>
+        <option value="synthwave2">Synthwave2</option>
+        <option value="experimental">Experimental</option>
+      </select>
+    </div>
 
 
     <div class="d-flex gap-3 my-3" id="frequency-range">
@@ -69,9 +70,59 @@
     !isNaN(maxFreq) ? maxFreq : undefined,
   ];
 
-  import(`./scripts/presets/${preset}.js`).then(module => {
-    module.run(...freqArgs);
-  });
+
+  const reusablePresets = ['classic', 'experimental']
+  if (reusablePresets.includes(preset)) {
+    let oscillators;
+
+    switch (preset) {
+      case 'experimental':
+        oscillators = ['sawtooth', 'square'];
+        break;
+
+      default: // 'classic':
+        oscillators = ['sine', 'triangle'];
+        break;
+    }
+
+    let frequencyRange;
+
+    switch (preset) {
+      case 'experimental':
+        frequencyRange = [100, 800];
+        break;
+
+      default: // 'classic':
+        frequencyRange = [100, 600];
+        break;
+    }
+
+    const args = {
+      themePath: `./styles/themes/${preset}.css`,
+      osc1Type: oscillators[0],
+      osc2Type: oscillators[1],
+      initialMinFreq: frequencyRange[0],
+      initialMaxFreq: frequencyRange[1]
+    }
+    import(`./scripts/canvas.js`).then(module => {
+      module.runPreset(args);
+    });
+  } else {
+    try {
+      const module = await import(`./scripts/presets/${preset}.js`);
+      module.run(...freqArgs);
+    } catch (e) {
+      console.warn('Preset not found, falling back to classic:', e);
+      const fallback = await import('./scripts/canvas.js');
+      fallback.runPreset({
+        themePath: `./styles/themes/classic.css`,
+        osc1Type: 'sine',
+        osc2Type: 'triangle',
+        initialMinFreq: 100,
+        initialMaxFreq: 600
+      });
+    }
+  }
 </script>
 </body>
 </html>
