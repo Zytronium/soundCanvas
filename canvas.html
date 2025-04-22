@@ -156,12 +156,21 @@
   const maxFreqElmnt = document.getElementById('maxFreq');
   const minFreqResetBtn = document.getElementById('minFreqReset');
   const maxFreqResetBtn = document.getElementById('maxFreqReset');
+
   applyBtn.onclick = () => {
     const newPreset =  presetElmnt.value;
     const newMinFreq = minFreqElmnt.value;
     const newMaxFreq = maxFreqElmnt.value;
 
     window.location.href = `./canvas.html?preset=${newPreset}&minFreq=${newMinFreq}&maxFreq=${newMaxFreq}`;
+  }
+
+  minFreqResetBtn.onclick = () => {
+    minFreqElmnt.value = getFrequencyRange(presetElmnt.value)[0];
+  }
+
+  maxFreqResetBtn.onclick = () => {
+    maxFreqElmnt.value = getFrequencyRange(presetElmnt.value)[1];
   }
 
   presetElmnt.onchange = (event) => {
