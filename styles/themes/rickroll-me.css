@@ -1,0 +1,6 @@
+.canvas {
+    background: url('../../images/roll.gif') !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: cover !important;
+}

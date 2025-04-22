@@ -32,6 +32,7 @@ export function run(minFreq = 100, maxFreq = 1200) {
     osc2.start();
 
     let isMouseDown = false;
+    let globalMouseIsDown = false;
 
     function updateSound(x, y, width, height) {
         const normX = x / width;
@@ -47,6 +48,47 @@ export function run(minFreq = 100, maxFreq = 1200) {
             gain2.gain.setTargetAtTime(normX, ctx.currentTime, 0.03);
         }
     }
+
+    window.addEventListener('mousedown', (e) => {
+        if (e.button === 0)
+            globalMouseIsDown = true;
+    });
+
+    window.addEventListener('mouseup', (e) => {
+        if (e.button === 0) {
+            globalMouseIsDown = false;
+            if (isMouseDown) {
+
+                isMouseDown = false;
+
+                const now = ctx.currentTime;
+                gain1.gain.setValueAtTime(gain1.gain.value, now);
+                gain1.gain.linearRampToValueAtTime(0, now + 0.2);
+
+                gain2.gain.setValueAtTime(gain2.gain.value, now);
+                gain2.gain.linearRampToValueAtTime(0, now + 0.2);
+            }
+        }
+    });
+
+    canvas.addEventListener('mouseenter', (e) => {
+        if (globalMouseIsDown && !isMouseDown) {
+            isMouseDown = true;
+
+            if (ctx.state === 'suspended')
+                ctx.resume();
+
+            const now = ctx.currentTime;
+            gain1.gain.cancelScheduledValues(now);
+            gain2.gain.cancelScheduledValues(now);
+
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            updateSound(y, x, rect.height, rect.width);
+        }
+    });
 
     canvas.addEventListener('mousedown', (e) => {
         if (e.button === 0) {

@@ -18,18 +18,22 @@
   <div id="controls"
        class="p-3 bg-white rounded shadow flex-fill flex-md-grow-1">
 
-      <a href="./" class="btn btn-primary align-self-start mb-4 m-auto" id="home-btn">Home</a>
+    <a href="./" class="btn btn-primary align-self-start mb-4 m-auto"
+       id="home-btn">Home</a>
 
-      <div class="d-flex flex-column">
-        <label for="preset" class="form-label">Preset</label>
-        <select id="preset" class="form-select">
-          <option value="classic">Classic</option>
-          <option value="untitled">Untitled</option>
-          <option value="synthwave">Synthwave1</option>
-          <option value="synthwave2">Synthwave2</option>
-          <option value="experimental">Experimental</option>
-        </select>
-      </div>
+    <div class="d-flex flex-column">
+      <label for="preset" class="form-label">Preset</label>
+      <select id="preset" class="form-select">
+        <option value="classic">Classic</option>
+        <option value="untitled">Untitled</option>
+        <option value="synthwave">Synthwave1</option>
+        <option value="synthwave2">Synthwave2</option>
+        <option value="experimental">Experimental</option>
+        <option value="engine">Engine</option>
+        <option value="thx">THX Sound Effect</option>
+        <option value="rickroll-me">???</option>
+      </select>
+    </div>
 
 
     <div class="d-flex gap-3 my-3" id="frequency-range">
@@ -46,7 +50,7 @@
       </div>
     </div>
 
-    <button class="btn btn-primary mt-2">Apply</button>
+    <button class="btn btn-primary mt-2" id="apply-btn">Apply</button>
 
   </div>
 
@@ -69,9 +73,76 @@
     !isNaN(maxFreq) ? maxFreq : undefined,
   ];
 
-  import(`./scripts/presets/${preset}.js`).then(module => {
-    module.run(...freqArgs);
-  });
+
+  const reusablePresets = ['classic', 'experimental']
+  if (reusablePresets.includes(preset)) {
+    let oscillators;
+
+    switch (preset) {
+      case 'experimental':
+        oscillators = ['sawtooth', 'square'];
+        break;
+
+      default: // 'classic':
+        oscillators = ['sine', 'triangle'];
+        break;
+    }
+
+    let frequencyRange;
+
+    switch (preset) {
+      case 'experimental':
+        frequencyRange = [100, 800];
+        break;
+
+      default: // 'classic':
+        frequencyRange = [100, 600];
+        break;
+    }
+
+    const args = {
+      themePath: `./styles/themes/${preset}.css`,
+      osc1Type: oscillators[0],
+      osc2Type: oscillators[1],
+      initialMinFreq: frequencyRange[0],
+      initialMaxFreq: frequencyRange[1]
+    }
+    import(`./scripts/canvas.js`).then(module => {
+      module.runPreset(args);
+    });
+  } else {
+    try {
+      const module = await import(`./scripts/presets/${preset}.js`);
+      module.run(...freqArgs);
+    } catch (e) {
+      console.warn('Preset not found, falling back to classic:', e);
+      const fallback = await import('./scripts/canvas.js');
+      fallback.runPreset({
+        themePath: `./styles/themes/classic.css`,
+        osc1Type: 'sine',
+        osc2Type: 'triangle',
+        initialMinFreq: 100,
+        initialMaxFreq: 600
+      });
+    }
+  }
+
+  const applyBtn = document.getElementById('apply-btn');
+  const presetElmnt = document.getElementById('preset');
+  const minFreqElmnt = document.getElementById('minFreq');
+  const maxFreqElmnt = document.getElementById('maxFreq');
+  applyBtn.onclick = () => {
+    const newPreset =  presetElmnt.value;
+    const newMinFreq = minFreqElmnt.value;
+    const newMaxFreq = maxFreqElmnt.value;
+
+    window.location.href = `./canvas.html?preset=${newPreset}&minFreq=${newMinFreq}&maxFreq=${newMaxFreq}`;
+  }
+
+  presetElmnt.value = preset;
+  minFreqElmnt.value = minFreq;
+  maxFreqElmnt.value = maxFreq;
+
 </script>
 </body>
 </html>
