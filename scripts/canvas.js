@@ -15,18 +15,26 @@ export function runPreset ({
     theme.href = themePath;
     document.head.appendChild(theme);*/
   const style = document.createElement('style');
+  const theme_tl = '#ff0026';
+  const theme_tr = '#ff5e00';
+  const theme_br = '#ff00c8';
+  const theme_bl = '#8700e7';
   style.textContent = `
     .canvas {
       background:
-              linear-gradient(rgba(0, 0, 0, 0.333), rgba(0, 0, 0, 0.333)),
-              linear-gradient(135deg, #ff0026, #ff5e00, #ff00c8, #8700e7);
-      background-size: 400% 400%;
-      background-blend-mode: darken;
-      animation: gradientMove 20s ease infinite;
+            radial-gradient(at center,       white,            white 100%),
+
+            radial-gradient(at top left,     ${theme_tl}, transparent 55%),
+            radial-gradient(at top right,    ${theme_tr}, transparent 55%),
+            radial-gradient(at bottom right, ${theme_br}, transparent 55%),
+            radial-gradient(at bottom left,  ${theme_bl}, transparent 55%),
+            radial-gradient(at top left,     ${theme_tl}, transparent 55%),
+            radial-gradient(at top right,    ${theme_tr}, transparent 55%),
+            radial-gradient(at bottom right, ${theme_br}, transparent 55%),
+            radial-gradient(at bottom left,  ${theme_bl}, transparent 55%);
         }
     `;
   document.head.appendChild(style);
-
 
   const canvas = document.querySelector('.canvas');
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
