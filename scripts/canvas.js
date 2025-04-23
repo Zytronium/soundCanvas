@@ -10,10 +10,21 @@ export function runPreset({
   let maxFreq = initialMaxFreq;
 
   // Apply theme
-  const theme = document.createElement('link');
+/*  const theme = document.createElement('link');
   theme.rel = 'stylesheet';
   theme.href = themePath;
-  document.head.appendChild(theme);
+  document.head.appendChild(theme);*/
+  const style = document.createElement('style');
+  style.textContent = `
+  :root {
+    --theme-tl: #ff0026;
+    --theme-tr: #ff5e00;
+    --theme-br: #ff00c8;
+    --theme-bl: #8700e7;
+}
+`;
+  document.head.appendChild(style);
+
 
   const canvas = document.querySelector('.canvas');
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
