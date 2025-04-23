@@ -113,6 +113,20 @@ function createGrid(key = 'C', mode = 'major') {
             
             cell.addEventListener('mouseleave', () => releaseNote(cell));
 
+            cell.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                if (Tone.context.state === 'running') triggerNote(cell);
+            });
+            cell.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                releaseNote(cell);
+            });
+            cell.addEventListener('touchcancel', (e) => {
+                e.preventDefault();
+                releaseNote(cell);
+            });
+
+
             grid.appendChild(cell);
         }
     }
