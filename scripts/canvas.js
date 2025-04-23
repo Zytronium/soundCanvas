@@ -15,23 +15,14 @@ export function runPreset ({
     theme.href = themePath;
     document.head.appendChild(theme);*/
   const style = document.createElement('style');
-  const theme_tl = '#ff0026';
-  const theme_tr = '#ff5e00';
-  const theme_br = '#ff00c8';
-  const theme_bl = '#8700e7';
   style.textContent = `
     .canvas {
       background:
-            radial-gradient(at center,       white,            white 100%),
-
-            radial-gradient(at top left,     ${theme_tl}, transparent 55%),
-            radial-gradient(at top right,    ${theme_tr}, transparent 55%),
-            radial-gradient(at bottom right, ${theme_br}, transparent 55%),
-            radial-gradient(at bottom left,  ${theme_bl}, transparent 55%),
-            radial-gradient(at top left,     ${theme_tl}, transparent 55%),
-            radial-gradient(at top right,    ${theme_tr}, transparent 55%),
-            radial-gradient(at bottom right, ${theme_br}, transparent 55%),
-            radial-gradient(at bottom left,  ${theme_bl}, transparent 55%);
+            radial-gradient(at center,       white,   white 100%),
+            radial-gradient(at top left,     #ff0026, transparent 55%),
+            radial-gradient(at top right,    #ff5e00, transparent 55%),
+            radial-gradient(at bottom right, #ff00c8, transparent 55%),
+            radial-gradient(at bottom left,  #8700e7, transparent 55%) !important;
         }
     `;
   document.head.appendChild(style);
