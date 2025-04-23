@@ -1,28 +1,30 @@
-export function runPreset({
-  themePath = 'https://zytronium.github.io/soundCanvas/styles/themes/classic.css',
-  osc1Type = 'sine',
-  osc2Type = 'triangle',
-  initialMinFreq = 100,
-  initialMaxFreq = 900
-  } = {}) {
+export function runPreset ({
+                             themePath = 'https://zytronium.github.io/soundCanvas/styles/themes/classic.css',
+                             osc1Type = 'sine',
+                             osc2Type = 'triangle',
+                             initialMinFreq = 100,
+                             initialMaxFreq = 900
+                           } = {}) {
   // Settings
   let minFreq = initialMinFreq;
   let maxFreq = initialMaxFreq;
 
   // Apply theme
-/*  const theme = document.createElement('link');
-  theme.rel = 'stylesheet';
-  theme.href = themePath;
-  document.head.appendChild(theme);*/
+  /*  const theme = document.createElement('link');
+    theme.rel = 'stylesheet';
+    theme.href = themePath;
+    document.head.appendChild(theme);*/
   const style = document.createElement('style');
   style.textContent = `
-  :root {
-    --theme-tl: #ff0026;
-    --theme-tr: #ff5e00;
-    --theme-br: #ff00c8;
-    --theme-bl: #8700e7;
-}
-`;
+    .canvas {
+      background:
+              linear-gradient(rgba(0, 0, 0, 0.333), rgba(0, 0, 0, 0.333)),
+              linear-gradient(135deg, #ff0026, #ff5e00, #ff00c8, #8700e7);
+      background-size: 400% 400%;
+      background-blend-mode: darken;
+      animation: gradientMove 20s ease infinite;
+        }
+    `;
   document.head.appendChild(style);
 
 
@@ -45,7 +47,7 @@ export function runPreset({
   let mouseIsDown = false;
   let globalMouseIsDown = false;
 
-  function updateSound(x, y, width, height) {
+  function updateSound (x, y, width, height) {
     const normX = x / width;
     const normY = y / height;
     const freq = minFreq + normX * (maxFreq - minFreq);
@@ -64,7 +66,7 @@ export function runPreset({
     }
   }
 
-  function fadeOutSound() {
+  function fadeOutSound () {
     mouseIsDown = false;
 
     const now = ctx.currentTime;
@@ -75,11 +77,11 @@ export function runPreset({
     gain2.gain.linearRampToValueAtTime(0, now + 0.125);
   }
 
-  function handleInputEvent(x, y, width, height) {
+  function handleInputEvent (x, y, width, height) {
     updateSound(x, y, width, height);
   }
 
-  function handleInteractionStart(x, y, width, height) {
+  function handleInteractionStart (x, y, width, height) {
     mouseIsDown = true;
 
     if (ctx.state === 'suspended')
@@ -93,12 +95,12 @@ export function runPreset({
     handleInputEvent(x, y, width, height);
   }
 
-  function handleInteractionMove(x, y, width, height) {
+  function handleInteractionMove (x, y, width, height) {
     if (mouseIsDown)
       handleInputEvent(x, y, width, height);
   }
 
-  function handleInteractionEnd() {
+  function handleInteractionEnd () {
     if (mouseIsDown)
       fadeOutSound();
 
