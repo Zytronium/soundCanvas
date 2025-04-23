@@ -13,31 +13,7 @@ export function runPreset({
   const theme = document.createElement('link');
   theme.rel = 'stylesheet';
   theme.href = themePath;
-  // document.head.appendChild(theme);
-
-  // Apply the theme even on Apple
-  const canvas = document.querySelector('.canvas');
-  let theme_tl = '#ff0026';
-  let theme_tr = '#ff5e00';
-  let theme_br = '#ff00c8';
-  let theme_bl = '#8700e7';
-  canvas.style.setProperty(
-    'background',
-    `
-    radial-gradient(at center,       white,            white 100%),
-    radial-gradient(at top left,     ${theme_tl}, transparent 55%),
-    radial-gradient(at top right,    ${theme_tr}, transparent 55%),
-    radial-gradient(at bottom right, ${theme_br}, transparent 55%),
-    radial-gradient(at bottom left,  ${theme_bl}, transparent 55%),
-    radial-gradient(at top left,     ${theme_tl}, transparent 55%),
-    radial-gradient(at top right,    ${theme_tr}, transparent 55%),
-    radial-gradient(at bottom right, ${theme_br}, transparent 55%),
-    radial-gradient(at bottom left,  ${theme_bl}, transparent 55%)
-  `,
-    'important'
-  );
-
-
+  document.head.appendChild(theme);
 
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
