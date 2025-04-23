@@ -15,6 +15,7 @@ export function runPreset({
   theme.href = themePath;
   document.head.appendChild(theme);
 
+  const canvas = document.querySelector('.canvas');
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
   // Oscillators for sound blending
@@ -142,8 +143,6 @@ export function runPreset({
       const rect = canvas.getBoundingClientRect();
       const touch = e.touches[0];
 
-      e.preventDefault(); // Prevents the browser from scrolling
-
       handleInteractionStart(touch.clientX - rect.left, touch.clientY - rect.top, rect.width, rect.height);
     }
   });
@@ -152,9 +151,6 @@ export function runPreset({
     if (e.touches.length > 0) {
       const rect = canvas.getBoundingClientRect();
       const touch = e.touches[0];
-
-      e.preventDefault(); // Prevents the browser from scrolling
-
 
       handleInteractionMove(touch.clientX - rect.left, touch.clientY - rect.top, rect.width, rect.height);
     }
