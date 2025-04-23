@@ -152,4 +152,48 @@ export function run(minFreq = 100, maxFreq = 1200) {
         gain2.gain.setValueAtTime(gain2.gain.value, now);
         gain2.gain.linearRampToValueAtTime(0, now + 0.2);
     });
+
+    // Mobile event listeners
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault(); // Prevent scrolling
+
+        isMouseDown = true;
+        if (ctx.state === 'suspended') {
+            ctx.resume();
+        }
+
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+
+        gain1.gain.cancelScheduledValues(ctx.currentTime);
+        gain2.gain.cancelScheduledValues(ctx.currentTime);
+
+        updateSound(y, x, rect.height, rect.width);
+    }, { passive: false });
+
+    canvas.addEventListener('touchmove', (e) => {
+        if (!isMouseDown) return;
+
+        e.preventDefault(); // Prevent scrolling
+
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        const x = touch.clientX - rect.left;
+        const y = touch.clientY - rect.top;
+
+        updateSound(y, x, rect.height, rect.width);
+    }, { passive: false });
+
+    canvas.addEventListener('touchend', () => {
+        isMouseDown = false;
+
+        const now = ctx.currentTime;
+        gain1.gain.setValueAtTime(gain1.gain.value, now);
+        gain1.gain.linearRampToValueAtTime(0, now + 0.2);
+
+        gain2.gain.setValueAtTime(gain2.gain.value, now);
+        gain2.gain.linearRampToValueAtTime(0, now + 0.2);
+    });
 }

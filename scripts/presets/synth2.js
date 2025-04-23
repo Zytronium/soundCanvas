@@ -150,4 +150,36 @@ export function run (minFreq = 100, maxFreq = 800) {
       updateSound(y, x, rect.height, rect.width);
     }
   });
+
+  // Mobile event listeners
+  canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault(); // Prevent scrolling while interacting
+    isMouseDown = true;
+
+    if (ctx.state === 'suspended') ctx.resume();
+
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    updateSound(y, x, rect.height, rect.width);
+  });
+
+  canvas.addEventListener('touchmove', (e) => {
+    if (!isMouseDown) return;
+
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    updateSound(y, x, rect.height, rect.width);
+  });
+
+  canvas.addEventListener('touchend', () => {
+    if (isMouseDown)
+      fadeOut();
+  });
+
 }
