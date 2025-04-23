@@ -1,10 +1,10 @@
 export function runPreset({
-  themePath = './styles/themes/classic.css',
-  osc1Type = 'sine',
-  osc2Type = 'triangle',
-  initialMinFreq = 100,
-  initialMaxFreq = 900
-  } = {}) {
+                            themePath = './styles/themes/classic.css',
+                            osc1Type = 'sine',
+                            osc2Type = 'triangle',
+                            initialMinFreq = 100,
+                            initialMaxFreq = 900
+                          } = {}) {
   // Settings
   let minFreq = initialMinFreq;
   let maxFreq = initialMaxFreq;
@@ -71,11 +71,9 @@ export function runPreset({
   function handleInteractionStart(x, y, width, height) {
     mouseIsDown = true;
 
-    if (ctx.state === 'suspended')
-      ctx.resume();
+    if (ctx.state === 'suspended') ctx.resume();
 
     const now = ctx.currentTime;
-
     gain1.gain.cancelScheduledValues(now);
     gain2.gain.cancelScheduledValues(now);
 
@@ -83,21 +81,17 @@ export function runPreset({
   }
 
   function handleInteractionMove(x, y, width, height) {
-    if (mouseIsDown)
-      handleInputEvent(x, y, width, height);
+    if (mouseIsDown) handleInputEvent(x, y, width, height);
   }
 
   function handleInteractionEnd() {
-    if (mouseIsDown)
-      fadeOutSound();
-
+    if (mouseIsDown) fadeOutSound();
     mouseIsDown = false;
   }
 
   // Desktop mouse events
   window.addEventListener('mousedown', (e) => {
-    if (e.button === 0)
-      globalMouseIsDown = true;
+    if (e.button === 0) globalMouseIsDown = true;
   });
 
   window.addEventListener('mouseup', (e) => {
@@ -108,17 +102,13 @@ export function runPreset({
   });
 
   canvas.addEventListener('mousedown', (e) => {
-    if (e.button !== 0)
-      return;
-
+    if (e.button !== 0) return;
     const rect = canvas.getBoundingClientRect();
-
     handleInteractionStart(e.clientX - rect.left, e.clientY - rect.top, rect.width, rect.height);
   });
 
   canvas.addEventListener('mousemove', (e) => {
     const rect = canvas.getBoundingClientRect();
-
     handleInteractionMove(e.clientX - rect.left, e.clientY - rect.top, rect.width, rect.height);
   });
 
@@ -127,14 +117,12 @@ export function runPreset({
   canvas.addEventListener('mouseenter', (e) => {
     if (globalMouseIsDown) {
       const rect = canvas.getBoundingClientRect();
-
       handleInteractionStart(e.clientX - rect.left, e.clientY - rect.top, rect.width, rect.height);
     }
   });
 
   canvas.addEventListener('click', () => {
-    if (ctx.state === 'suspended')
-      ctx.resume();
+    if (ctx.state === 'suspended') ctx.resume();
   });
 
   // Mobile touch events
@@ -142,7 +130,6 @@ export function runPreset({
     if (e.touches.length > 0) {
       const rect = canvas.getBoundingClientRect();
       const touch = e.touches[0];
-
       handleInteractionStart(touch.clientX - rect.left, touch.clientY - rect.top, rect.width, rect.height);
     }
   });
@@ -151,7 +138,6 @@ export function runPreset({
     if (e.touches.length > 0) {
       const rect = canvas.getBoundingClientRect();
       const touch = e.touches[0];
-
       handleInteractionMove(touch.clientX - rect.left, touch.clientY - rect.top, rect.width, rect.height);
     }
   });
