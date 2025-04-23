@@ -41,9 +41,7 @@ export function run(minFreq = 40, maxFreq = 250) {
     osc1.connect(gain1).connect(ctx.destination);
     osc2.connect(gain2).connect(ctx.destination);
 
-    osc1.start();
-    osc2.start();
-
+    let oscillatorsStarted = false;
     let isMouseDown = false;
     let globalMouseIsDown = false;
 
@@ -57,6 +55,11 @@ export function run(minFreq = 40, maxFreq = 250) {
 
         // Only change gain if mouse is down
         if (isMouseDown) {
+            if (!oscillatorsStarted) {
+                osc1.start();
+                osc2.start();
+                oscillatorsStarted = true;
+            }
             gain1.gain.setTargetAtTime(1 - normX, ctx.currentTime, 0.05);
             gain2.gain.setTargetAtTime(normX, ctx.currentTime, 0.05);
         }
