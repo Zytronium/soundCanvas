@@ -112,7 +112,7 @@ function createGrid(key = 'C', mode = 'major') {
             });
             
             cell.addEventListener('mouseleave', () => releaseNote(cell));
-
+            // mobile touch fix //
             cell.addEventListener('touchstart', (e) => {
                 e.preventDefault();
                 if (Tone.context.state === 'running') triggerNote(cell);
