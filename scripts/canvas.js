@@ -64,31 +64,11 @@ export function runPreset({
     gain2.gain.linearRampToValueAtTime(0, now + 0.125);
   }
 
-  function handleMouseEvent(e) {
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    updateSound(x, y, rect.width, rect.height);
+  function handleInputEvent(x, y, width, height) {
+    updateSound(x, y, width, height);
   }
 
-  window.addEventListener('mousedown', (e) => {
-    if (e.button === 0)
-      globalMouseIsDown = true;
-  });
-
-  window.addEventListener('mouseup', (e) => {
-    if (e.button === 0) {
-      globalMouseIsDown = false;
-      if (mouseIsDown)
-        fadeOutSound();
-    }
-  });
-
-  canvas.addEventListener('mousedown', (e) => {
-    if (e.button !== 0)
-      return;
-
+  function handleInteractionStart(x, y, width, height) {
     mouseIsDown = true;
 
     if (ctx.state === 'suspended')
@@ -99,31 +79,56 @@ export function runPreset({
     gain1.gain.cancelScheduledValues(now);
     gain2.gain.cancelScheduledValues(now);
 
-    handleMouseEvent(e);
+    handleInputEvent(x, y, width, height);
+  }
+
+  function handleInteractionMove(x, y, width, height) {
+    if (mouseIsDown)
+      handleInputEvent(x, y, width, height);
+  }
+
+  function handleInteractionEnd() {
+    if (mouseIsDown)
+      fadeOutSound();
+
+    mouseIsDown = false;
+  }
+
+  // Desktop mouse events
+  window.addEventListener('mousedown', (e) => {
+    if (e.button === 0)
+      globalMouseIsDown = true;
+  });
+
+  window.addEventListener('mouseup', (e) => {
+    if (e.button === 0) {
+      globalMouseIsDown = false;
+      handleInteractionEnd();
+    }
+  });
+
+  canvas.addEventListener('mousedown', (e) => {
+    if (e.button !== 0)
+      return;
+
+    const rect = canvas.getBoundingClientRect();
+
+    handleInteractionStart(e.clientX - rect.left, e.clientY - rect.top, rect.width, rect.height);
   });
 
   canvas.addEventListener('mousemove', (e) => {
-    if (mouseIsDown)
-      handleMouseEvent(e);
+    const rect = canvas.getBoundingClientRect();
+
+    handleInteractionMove(e.clientX - rect.left, e.clientY - rect.top, rect.width, rect.height);
   });
 
-  canvas.addEventListener('mouseleave', () => {
-    if (mouseIsDown)
-      fadeOutSound();
-  });
+  canvas.addEventListener('mouseleave', handleInteractionEnd);
 
   canvas.addEventListener('mouseenter', (e) => {
     if (globalMouseIsDown) {
-      mouseIsDown = true;
+      const rect = canvas.getBoundingClientRect();
 
-      if (ctx.state === 'suspended')
-        ctx.resume();
-
-      const now = ctx.currentTime;
-      gain1.gain.cancelScheduledValues(now);
-      gain2.gain.cancelScheduledValues(now);
-
-      handleMouseEvent(e);
+      handleInteractionStart(e.clientX - rect.left, e.clientY - rect.top, rect.width, rect.height);
     }
   });
 
@@ -131,4 +136,26 @@ export function runPreset({
     if (ctx.state === 'suspended')
       ctx.resume();
   });
+
+  // Mobile touch events
+  canvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length > 0) {
+      const rect = canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+
+      handleInteractionStart(touch.clientX - rect.left, touch.clientY - rect.top, rect.width, rect.height);
+    }
+  });
+
+  canvas.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      const rect = canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+
+      handleInteractionMove(touch.clientX - rect.left, touch.clientY - rect.top, rect.width, rect.height);
+    }
+  });
+
+  canvas.addEventListener('touchend', handleInteractionEnd);
+  canvas.addEventListener('touchcancel', handleInteractionEnd);
 }
