@@ -13,7 +13,7 @@ export function runPreset({
   const theme = document.createElement('link');
   theme.rel = 'stylesheet';
   theme.href = themePath;
-  document.head.appendChild(theme);
+  // document.head.appendChild(theme);
 
   // Apply the theme even on Apple
   const canvas = document.querySelector('.canvas');
