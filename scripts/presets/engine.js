@@ -29,8 +29,7 @@ export function run(minFrequency = 0, maxFreq = 800) {
     osc1.connect(gain1).connect(ctx.destination);
     osc2.connect(gain2).connect(ctx.destination);
 
-    osc1.start();
-    osc2.start();
+    let oscillatorsStarted = false;
 
     function updateSound(x, y, width, height) {
         const normX = x / width;
@@ -39,6 +38,12 @@ export function run(minFrequency = 0, maxFreq = 800) {
 
         osc1.frequency.setValueAtTime(freq, ctx.currentTime);
         osc2.frequency.setValueAtTime(freq * 0.75, ctx.currentTime);
+
+        if (!oscillatorsStarted) {
+            osc1.start();
+            osc2.start();
+            oscillatorsStarted = true;
+        }
 
         // Crossfade gain
         gain1.gain.setValueAtTime(1 - normX, ctx.currentTime);
