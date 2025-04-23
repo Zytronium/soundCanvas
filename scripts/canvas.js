@@ -10,10 +10,18 @@ export function runPreset({
   let maxFreq = initialMaxFreq;
 
   // Apply theme
+  try {
+
   const theme = document.createElement('link');
   theme.rel = 'stylesheet';
   theme.href = themePath;
   document.head.appendChild(theme);
+  } catch (e) {
+    const errorPara = document.createElement('p');
+    errorPara.textContent = e;
+    document.body.querySelector('#main-container').appendChild(errorPara);
+  }
+
 
   const canvas = document.querySelector('.canvas');
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
