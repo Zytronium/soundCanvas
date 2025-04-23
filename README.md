@@ -87,3 +87,9 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+## Grading Components
+ 1. Our Website is responsive (bootstrap)
+ 2. Our website uses CSS and Bootstrap.
+ 3. We have SEO.
+ 4. We have Javascript engine for the sounds.
