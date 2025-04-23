@@ -35,7 +35,7 @@ export function run() {
   // Create reverb effect
   const convolver = ctx.createConvolver();
   const reverbGain = ctx.createGain();
-  reverbGain.gain.value = 2; // Reverb blend
+  reverbGain.gain.value = 0.9; // Reverb blend
   convolver.connect(reverbGain).connect(ctx.destination);
   convolver.buffer = createImpulse();
 
@@ -81,9 +81,9 @@ export function run() {
 
     // Adjust gain based on target frequency (low = louder, high = softer)
     const maxGain = 0.2;
-    const minGain = 0.05;
+    const minGain = 0.08;
     const freqScale = (1 / targetFreq);
-    const scaledGain = Math.min(maxGain, Math.max(minGain, freqScale * 20));
+    const scaledGain = Math.min(maxGain, Math.max(minGain, freqScale * 15));
 
     gain.gain.setValueAtTime(0, ctx.currentTime);
     gain.gain.linearRampToValueAtTime(scaledGain, ctx.currentTime + INITIAL_HOLD);
