@@ -36,7 +36,7 @@
      id="main-container">
 
   <button class="btn btn-secondary d-md-none mb-2" id="toggle-controls-btn">
-    Show
+    Show Controls
   </button>
 
   <div id="controls"
@@ -148,7 +148,7 @@
     let frequencyRange = getFrequencyRange(preset);
 
     const args = {
-      themePath: `./styles/themes/${preset}.css`,
+      themePath: `/styles/themes/${preset}.css`,
       osc1Type: oscillators[0],
       osc2Type: oscillators[1],
       initialMinFreq: !isNaN(minFreq) ? minFreq : frequencyRange[0],
@@ -165,7 +165,7 @@
       console.warn('Preset not found, falling back to classic:', e);
       const fallback = await import('./scripts/canvas.js');
       fallback.runPreset({
-        themePath: `./styles/themes/classic.css`,
+        themePath: `/styles/themes/classic.css`,
         osc1Type: 'sine',
         osc2Type: 'triangle',
         initialMinFreq: 100,
