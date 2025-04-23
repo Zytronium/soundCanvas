@@ -15,6 +15,11 @@
 <body>
 <div class="container-fluid d-flex flex-column flex-md-row align-items-start gap-3 p-3 rounded-4"
      id="main-container">
+
+  <button class="btn btn-secondary d-md-none mb-2" id="toggle-controls-btn">
+    Show Controls
+  </button>
+
   <div id="controls"
        class="p-3 bg-white rounded shadow flex-fill flex-md-grow-1">
 
@@ -156,6 +161,17 @@
   const maxFreqElmnt = document.getElementById('maxFreq');
   const minFreqResetBtn = document.getElementById('minFreqReset');
   const maxFreqResetBtn = document.getElementById('maxFreqReset');
+  const toggleBtn = document.getElementById('toggle-controls-btn');
+  const controlsPanel = document.getElementById('controls');
+
+  let controlPanelCollapsed = true;
+  controlsPanel.style.display = 'none'; // This is overridden by CSS in landscape
+
+  toggleBtn.addEventListener('click', () => {
+    controlPanelCollapsed = !controlPanelCollapsed;
+    controlsPanel.style.display = controlPanelCollapsed ? 'none' : 'block';
+    toggleBtn.textContent = controlPanelCollapsed ? 'Show Controls' : 'Hide Controls';
+  });
 
   applyBtn.onclick = () => {
     const newPreset =  presetElmnt.value;
