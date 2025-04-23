@@ -1,4 +1,4 @@
-export function run(minFrequency = 0, maxFreq = 800) {
+export function run(minFrequency = 0, maxFreq = 650) {
     // Apply theme
     const theme = document.createElement('link');
     theme.rel = 'stylesheet';
@@ -57,9 +57,21 @@ export function run(minFrequency = 0, maxFreq = 800) {
         updateSound(x, x, rect.height, rect.width);
     });
 
+    canvas.addEventListener('touchmove', (e) => {
+        e.preventDefault(); // Prevents the browser from scrolling
+
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0]; // Get the first touch point
+        const x = touch.clientY - rect.bottom;
+
+        updateSound(x, x, rect.height, rect.height);
+    }, { passive: false });
+
+
     // Smooth fade-out on mouse leave
     canvas.addEventListener('mouseleave', () => {
         const now = ctx.currentTime;
+
         gain1.gain.setValueAtTime(gain1.gain.value, now);
         gain1.gain.linearRampToValueAtTime(0, now + 0.125);
 
@@ -67,10 +79,28 @@ export function run(minFrequency = 0, maxFreq = 800) {
         gain2.gain.linearRampToValueAtTime(0, now + 0.125);
     });
 
+    canvas.addEventListener('touchend', () => {
+        const now = ctx.currentTime;
+
+        gain1.gain.setValueAtTime(gain1.gain.value, now);
+        gain1.gain.linearRampToValueAtTime(0, now + 0.125);
+
+        gain2.gain.setValueAtTime(gain2.gain.value, now);
+        gain2.gain.linearRampToValueAtTime(0, now + 0.125);
+    });
+
+
     // Resume audio context on click (browser anti-autoplay policy)
     canvas.addEventListener('click', () => {
         if (ctx.state === 'suspended') {
             ctx.resume();
         }
     });
+
+    canvas.addEventListener('touchstart', () => {
+        if (ctx.state === 'suspended') {
+            ctx.resume();
+        }
+    });
+
 }
