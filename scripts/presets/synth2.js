@@ -153,7 +153,7 @@ export function run (minFreq = 100, maxFreq = 800) {
 
   // Mobile event listeners
   canvas.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // Prevent scrolling while interacting
+    e.preventDefault();  // Prevents the browser from scrolling
     isMouseDown = true;
 
     if (ctx.state === 'suspended') ctx.resume();
@@ -168,6 +168,8 @@ export function run (minFreq = 100, maxFreq = 800) {
 
   canvas.addEventListener('touchmove', (e) => {
     if (!isMouseDown) return;
+
+    e.preventDefault(); // Prevents the browser from scrolling
 
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
