@@ -16,7 +16,6 @@ export function runPreset({
   theme.rel = 'stylesheet';
   theme.href = themePath;
   document.head.appendChild(theme);
-  throw Error('test');
   } catch (e) {
     const errorPara = document.createElement('p');
     errorPara.textContent = e;
