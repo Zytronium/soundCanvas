@@ -29,7 +29,7 @@ body {
     max-width: 100%;
     width: auto;
     max-height: 97.5%;
-    background-color: rgb(0, 0, 0);
+    background-color: rgba(69, 182, 237, 0.9);
 }
 
 .canvas {

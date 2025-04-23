@@ -148,7 +148,7 @@
     let frequencyRange = getFrequencyRange(preset);
 
     const args = {
-      themePath: `/styles/themes/${preset}.css`,
+      themePath: `https://zytronium.github.io/soundCanvas/styles/themes/${preset}.css`,
       osc1Type: oscillators[0],
       osc2Type: oscillators[1],
       initialMinFreq: !isNaN(minFreq) ? minFreq : frequencyRange[0],
@@ -165,7 +165,7 @@
       console.warn('Preset not found, falling back to classic:', e);
       const fallback = await import('./scripts/canvas.js');
       fallback.runPreset({
-        themePath: `/styles/themes/classic.css`,
+        themePath: `https://zytronium.github.io/soundCanvas/styles/themes/classic.css`,
         osc1Type: 'sine',
         osc2Type: 'triangle',
         initialMinFreq: 100,
