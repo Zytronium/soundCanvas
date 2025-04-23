@@ -2,7 +2,7 @@ export function run (minFreq = 100, maxFreq = 800) {
   // Apply theme
   const theme = document.createElement('link');
   theme.rel = 'stylesheet';
-  theme.href = './styles/themes/synthwave.css';
+  theme.href = './styles/themes/synth.css';
   document.head.appendChild(theme);
 
   const canvas = document.querySelector('.canvas');
@@ -38,7 +38,7 @@ export function run (minFreq = 100, maxFreq = 800) {
   lfoGain.gain.value = 0.2;
 
   const masterGain = ctx.createGain();
-  masterGain.gain.value = 0.6;
+  masterGain.gain.value = 1.8;
 
   lfo.connect(lfoGain);
   lfoGain.connect(masterGain.gain);
