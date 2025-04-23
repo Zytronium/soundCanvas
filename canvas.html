@@ -52,7 +52,7 @@
         <option value="synth-trombone">Synth Trombone</option>
         <option value="synth">Synth 1</option>
         <option value="synth2">Synth 2</option>
-        <option value="experimental">Experimental</option>
+        <option value="8-bit">8-Bit</option>
         <option value="" disabled aria-disabled="true">--- Special Effects ---</option>
         <option value="engine">Engine</option>
         <option value="thx">THX Sound Effect</option>
@@ -117,7 +117,7 @@
       case 'synth-trombone':
         return [40, 250];
 
-      case 'experimental':
+      case '8-bit':
         return [100, 600];
 
       default: // 'classic':
@@ -131,12 +131,12 @@
     !isNaN(maxFreq) ? maxFreq : undefined,
   ];
 
-  const reusablePresets = ['classic', 'experimental']
+  const reusablePresets = ['classic', '8-bit']
   if (reusablePresets.includes(preset)) {
     let oscillators;
 
     switch (preset) {
-      case 'experimental':
+      case '8-bit':
         oscillators = ['sawtooth', 'square'];
         break;
 
