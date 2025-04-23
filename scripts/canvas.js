@@ -1,5 +1,5 @@
 export function runPreset({
-  themePath = './styles/themes/classic.css',
+  themePath = '/styles/themes/classic.css',
   osc1Type = 'sine',
   osc2Type = 'triangle',
   initialMinFreq = 100,
