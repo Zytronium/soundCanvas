@@ -10,20 +10,35 @@ export function runPreset({
   let maxFreq = initialMaxFreq;
 
   // Apply theme
-  try {
-
   const theme = document.createElement('link');
   theme.rel = 'stylesheet';
   theme.href = themePath;
   document.head.appendChild(theme);
-  } catch (e) {
-    const errorPara = document.createElement('p');
-    errorPara.textContent = e;
-    document.body.querySelector('#main-container').appendChild(errorPara);
-  }
 
-
+  // Apply the theme even on Apple
   const canvas = document.querySelector('.canvas');
+  let theme_tl = '#ff0026';
+  let theme_tr = '#ff5e00';
+  let theme_br = '#ff00c8';
+  let theme_bl = '#8700e7';
+  canvas.style.setProperty(
+    'background',
+    `
+    radial-gradient(at center,       white,            white 100%),
+    radial-gradient(at top left,     ${theme_tl}, transparent 55%),
+    radial-gradient(at top right,    ${theme_tr}, transparent 55%),
+    radial-gradient(at bottom right, ${theme_br}, transparent 55%),
+    radial-gradient(at bottom left,  ${theme_bl}, transparent 55%),
+    radial-gradient(at top left,     ${theme_tl}, transparent 55%),
+    radial-gradient(at top right,    ${theme_tr}, transparent 55%),
+    radial-gradient(at bottom right, ${theme_br}, transparent 55%),
+    radial-gradient(at bottom left,  ${theme_bl}, transparent 55%)
+  `,
+    'important'
+  );
+
+
+
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
   // Oscillators for sound blending
