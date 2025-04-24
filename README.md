@@ -1,6 +1,8 @@
 # SoundCanvas 🎵
 
-An interactive web-based music experience where you can create sounds and music through visual interactions. Explore two core modes: **Sound Canvas** for frequency-based soundscapes and **Note Grid** for musical composition.
+An interactive web-based music experience where you can create sounds and music
+through visual interactions. Explore two core modes: **Sound Canvas** for
+frequency-based soundscapes and **Note Grid** for musical composition.
 
 [SoundCanvas Demo](https://zytronium.github.io/soundCanvas)
 
@@ -8,9 +10,10 @@ An interactive web-based music experience where you can create sounds and music 
 
 ### Sound Canvas Mode
 - Visual sound generation through mouse movements
-- Adjustable frequency ranges (100-30000Hz)
-- 8+ presets including Synthwave, Experimental, and THX effect
-- Themeable interface with gradient animations
+- Control panel, collapsable in vertical mode
+- Adjustable frequency ranges (0-30,000 Hz)
+- 8+ presets including Synth, 8-Bit, and THX Sound Effect
+- Themeable interface with gradient designs and an animated background
 - Mobile-friendly responsive design
 
 ### Note Grid Mode 🎹
@@ -28,8 +31,6 @@ An interactive web-based music experience where you can create sounds and music 
 
 ----
 
-[Click here to view the website](https://zytronium.github.io/soundCanvas/)
-
 ## Usage Guide 📖
 ### Sound Canvas
  1. Choose preset from dropdown
@@ -40,6 +41,19 @@ An interactive web-based music experience where you can create sounds and music 
 
  4. Use mouse hover and clicks to blend oscillators
 
+##### Note: Special Effects have differing controls.
+- Engine
+  - Hover mouse over canvas to create sound
+  - Pitch/RPM is controlled by the vertical axis
+  - Min frequency is locked at 0 Hz
+- THX Sound Effect
+  - Plays automatically
+  - No user input is required except clicking apply or on the canvas to start the sound effect
+  - Can not be adjusted
+- ???
+  - Mystery preset
+  - Frequency range is locked
+
 ### Note Grid
  1. Select root key and scale mode
 
@@ -47,9 +61,9 @@ An interactive web-based music experience where you can create sounds and music 
 
  3. Interact with:
 
-    - Mouse hover (desktop)
+    - Mouse hover (Desktop)
 
-    - Touch (mobile)
+    - Touch (Mobile)
 
     - Keyboard shortcuts (1-8, Q-I)
 
@@ -68,7 +82,7 @@ An interactive web-based music experience where you can create sounds and music 
 
  ## License 📄
 MIT License
-Copyright (c) 2025 SoundCanvus
+Copyright © 2025 SoundCanvas
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -89,7 +103,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ## Grading Components
- 1. Our Website is responsive (bootstrap)
+ 1. Our Website is responsive (Bootstrap).
  2. Our website uses CSS and Bootstrap.
  3. We have SEO.
- 4. We have Javascript engine for the sounds.
+ 4. We have a JavaScript engine for the sounds.
