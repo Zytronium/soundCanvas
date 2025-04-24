@@ -1,31 +1,19 @@
 export function runPreset ({
-                             themePath = 'https://zytronium.github.io/soundCanvas/styles/themes/classic.css',
-                             osc1Type = 'sine',
-                             osc2Type = 'triangle',
-                             initialMinFreq = 100,
-                             initialMaxFreq = 900
-                           } = {}) {
+    themePath = 'https://zytronium.github.io/soundCanvas/styles/themes/classic.css',
+    osc1Type = 'sine',
+    osc2Type = 'triangle',
+    initialMinFreq = 100,
+    initialMaxFreq = 900
+  } = {}) {
   // Settings
   let minFreq = initialMinFreq;
   let maxFreq = initialMaxFreq;
 
   // Apply theme
-  /*  const theme = document.createElement('link');
-    theme.rel = 'stylesheet';
-    theme.href = themePath;
-    document.head.appendChild(theme);*/
-  const style = document.createElement('style');
-  style.textContent = `
-    .canvas {
-      background:
-            radial-gradient(at center,       white,   white 100%),
-            radial-gradient(at top left,     #ff0026, transparent 55%),
-            radial-gradient(at top right,    #ff5e00, transparent 55%),
-            radial-gradient(at bottom right, #ff00c8, transparent 55%),
-            radial-gradient(at bottom left,  #8700e7, transparent 55%) !important;
-        }
-    `;
-  document.head.appendChild(style);
+  const theme = document.createElement('link');
+  theme.rel = 'stylesheet';
+  theme.href = themePath;
+  document.head.appendChild(theme);
 
   const canvas = document.querySelector('.canvas');
   const ctx = new (window.AudioContext || window.webkitAudioContext)();
